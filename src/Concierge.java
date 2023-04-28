@@ -43,5 +43,9 @@ public class Concierge implements PapotageListener {
         System.out.println(this.getPseudo() + " a bien reçu le message");
         System.out.println("Sujet : " + papotage.getSujet());
         System.out.println("Corps : " + papotage.getCorps() +"\n");
+
+        for (PapotageListener pl : this.destinataires) {
+            pl.newPapotage(papotage);
+        }
     }
 }

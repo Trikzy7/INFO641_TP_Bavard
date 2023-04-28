@@ -35,6 +35,8 @@ public class Batiment {
         this.name = name;
     }
 
+
+
     // ----- Methods
     public boolean addConcierge(Concierge concierge) {
         if (this.getConcierge() == null) {
@@ -100,8 +102,8 @@ public class Batiment {
                     // -- Le bavard veut recevoir les messages du concierge
                     b.setWantReceiveMessage(false);
 
-                    // -- On remove le concierge dans la liste du bavard
-//                    this.removeConciergeInListBavard(b);
+                    // -- On ajoute le concierge dans la liste du bavard
+                    this.addConciergeInListBavard(b);
 
                     // -- On remove le bavard dans la liste du concierge
                     this.removeBavardsInListConcierge(b);
@@ -119,9 +121,8 @@ public class Batiment {
     }
 
     public void addConciergeInListBavard(Bavard b) {
-        if (b.isWantReceiveMessage())
-            // Add le concierge pour les bavards qui veulent recevoir les messages
-            b.addPapotageListener(this.getConcierge());
+        // Add le concierge pour les bavards qui veulent recevoir les messages
+        b.addPapotageListener(this.getConcierge());
     }
 
 

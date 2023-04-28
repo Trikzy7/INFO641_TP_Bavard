@@ -38,27 +38,38 @@ public class Bavard  implements PapotageListener{
     }
 
     public void addPapotageListener(PapotageListener pl) {
+        /*
+        GOAL : Ajouter l'element pl a la liste
+         */
         destinataires.add(pl);
     }
 
     public void removePapotageListener(PapotageListener pl) {
+        /*
+        GOAL : Remove l'element pl a la liste
+         */
         destinataires.remove(pl);
     }
 
     public void generateNewPapotage(String sujet, String corps) {
+        /*
+        GOAL : Permet qu'un bavard envoie un message a son concierge et que le concierge réenvoie les messages
+         */
+
         PapotageEvent papotage = new PapotageEvent(this, sujet, corps);
 
         for (PapotageListener pl : this.destinataires) {
             // -- Le concierge reçoit le message
             pl.newPapotage(papotage);
 
-            // -- Le concierge réenvoie le message à sa liste de bavard
-            pl.generateNewPapotage(sujet, corps);
         }
     }
 
     @Override
     public void newPapotage(PapotageEvent papotage) {
+        /*
+        GOAL : Ajouter l'element pl a la liste
+         */
         papotage.getSource();
 
         if (this.isOnLine()) {

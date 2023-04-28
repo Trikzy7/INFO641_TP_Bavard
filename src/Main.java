@@ -20,25 +20,15 @@ public class Main {
         louisArmand.connectBavard(henry);
 
             // -- Receive Message
-        louisArmand.receiveMessageBavard(robert, false);
-        System.out.println(louisArmand.getConcierge().destinataires);
-
-        for (Bavard b : louisArmand.getListeBavard()) {
-            if (b == robert) {
-                System.out.println(robert.destinataires);
-            }
-        }
+        louisArmand.receiveMessageBavard(robert, true);
+        louisArmand.receiveMessageBavard(henry, true);
 
 
 
-
-//        louisArmand.receiveMessageBavard(henry, true);
-//
-//
 //        // -- Un bavard envoie le message
 //        louisArmand.bavardSendMessage(robert, "Super Sujet", "Super Corps vraiment long");
 
         // -- Concierge envoie le message
-//        louisArmand.conciergeSendMessage("Sujet de gege", "Corps de gege");
+        louisArmand.conciergeSendMessage("Sujet de gege", "Corps de gege");
     }
 }
