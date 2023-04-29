@@ -26,9 +26,16 @@ public class Main {
 
 
 //        // -- Un bavard envoie le message
-//        louisArmand.bavardSendMessage(robert, "Super Sujet", "Super Corps vraiment long");
+        louisArmand.bavardSendMessage(robert, "Super Sujet", "Super Corps vraiment long");
 
         // -- Concierge envoie le message
-        louisArmand.conciergeSendMessage("Sujet de gege", "Corps de gege");
+        //louisArmand.conciergeSendMessage("Sujet de gege", "Corps de gege");
+
+
+            // -- Test des interfaces
+        //new Batiment_Interface();
+        //new Batiment_Concierge_Interface();
+        new Bavard_Interface();
+
     }
 }
