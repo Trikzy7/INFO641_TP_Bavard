@@ -37,6 +37,9 @@ public class Bavard_Interface extends JFrame{
 
         this.batiment = batiment;
         this.currentBavard = bavard;
+
+        this.getCurrentBavard().setOnLine(true);
+
         System.out.println(this.getBatiment().getListeBavard());
 
         System.out.println(this.getCurrentBavard().getPseudo());

@@ -217,7 +217,6 @@ public class Batiment_Interface extends JFrame implements ActionListener {
 
             // -- If Bavard exist -> Redirect on Interface Bavard with batiment created and the current Bavard
             if (this.checkIfBavardExist(pseudo))
-//                System.out.println(getBavardFromList(pseudo).getPseudo());
                 new Bavard_Interface(this.getBatiment(), getBavardFromList(pseudo) );
             else
                 JOptionPane.showMessageDialog(this, "Le bavard n'existe pas");
