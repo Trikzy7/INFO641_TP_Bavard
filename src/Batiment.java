@@ -122,9 +122,23 @@ public class Batiment {
 
     public void addConciergeInListBavard(Bavard b) {
         // Add le concierge pour les bavards qui veulent recevoir les messages
-        b.addPapotageListener(this.getConcierge());
+        if (!b.destinataires.contains(this.getConcierge()))
+            b.addPapotageListener(this.getConcierge());
     }
 
+    public Bavard getBavardFromList(Bavard bavardParam) {
+        /*
+        Permet de récupérer un bavard de la liste des bavards
+         */
+        Bavard bavardFound = null;
+
+        for ( Bavard b : this.getListeBavard() ) {
+            if (b == bavardParam)
+                bavardFound = b;
+        }
+
+        return bavardFound;
+    }
 
     public void removeBavardsInListConcierge(Bavard b) {
         if (!b.isWantReceiveMessage())

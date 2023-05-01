@@ -17,7 +17,7 @@ public class Main {
 
 //        System.out.println(robert.equals(henry));
 
-        System.out.println( louisArmand.getListeBavard().contains(henry) );
+//        System.out.println( louisArmand.getListeBavard().contains(henry) );
 
 
         louisArmand.addBavard(robert);

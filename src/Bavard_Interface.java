@@ -1,10 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 public class Bavard_Interface extends JFrame{
 
     // -- ATTRIBUTE
+    private JTextField inputSubject;
+    private JTextField inputTheme;
+    private JTextArea inputAreaMessage;
     private Batiment batiment;
     private Bavard currentBavard;
 
@@ -40,13 +44,17 @@ public class Bavard_Interface extends JFrame{
 
         this.getCurrentBavard().setOnLine(true);
 
+        for(Bavard b : this.getBatiment().getListeBavard()) {
+            this.getBatiment().receiveMessageBavard(b, true);
+//            System.out.println(b.getPseudo());
+        }
+
         System.out.println(this.getBatiment().getListeBavard());
 
-        System.out.println(this.getCurrentBavard().getPseudo());
 
-        int i=0;
-        if (i==0) Bavard_Interface_Principal();
-        if (i==1) Bavard_Interface_Write();
+        // On met l'interface principal du bavard
+        Bavard_Interface_Principal();
+
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -58,7 +66,7 @@ public class Bavard_Interface extends JFrame{
 
 
 
-    // Interface principal des bavards
+    // -- Interface principal des bavards
     public void Bavard_Interface_Principal(){
         //setBounds(-1500, 300,850,530);
         setSize(850,530);
@@ -127,6 +135,7 @@ public class Bavard_Interface extends JFrame{
 
         JButton btnWriteMessage = new JButton("Ecire un Message");
         panelBoutons.add(btnWriteMessage);
+        btnWriteMessage.addActionListener( (event) -> btnWriteMessageListerner(event) );
 
         JLabel labelBavardOnLine = new JLabel("En ligne :");
         labelBavardOnLine.setBorder(BorderFactory.createEmptyBorder(20,0,10,0));
@@ -167,7 +176,14 @@ public class Bavard_Interface extends JFrame{
 
     }
 
-    // Interface pour écrire un message
+    // --------------- METHODS BINDING BTN
+    private void btnWriteMessageListerner(ActionEvent e) {
+        Bavard_Interface_Write();
+    }
+
+
+
+    // -- Interface pour écrire un message
     public void Bavard_Interface_Write(){
         //setBounds(-1800, 250,800,400);
         setSize(800,400);
@@ -177,22 +193,27 @@ public class Bavard_Interface extends JFrame{
 
         // Création du panneau supérieur avec un label, une zone de texte et un bouton
         JPanel panelHaut = new JPanel(new FlowLayout());
-        JLabel label = new JLabel("Sujet : ");
-        JTextField textField = new JTextField(20);
-        JLabel label2 = new JLabel("Thème : ");
-        JTextField textField2 = new JTextField(20);
-        JButton bouton = new JButton("ENVOYER");
-        panelHaut.add(label);
-        panelHaut.add(textField);
+
+        JLabel labelSubject = new JLabel("Sujet : ");
+        inputSubject = new JTextField(20);
+
+        JLabel labelTheme = new JLabel("Thème : ");
+        inputTheme = new JTextField(20);
+
+        JButton btnSendMessage = new JButton("ENVOYER");
+        btnSendMessage.addActionListener( (event) -> btnSendMessageListener(event) );
+
+        panelHaut.add(labelSubject);
+        panelHaut.add(inputSubject);
         panelHaut.add(Box.createRigidArea(new Dimension(30, 0)));
-        panelHaut.add(label2);
-        panelHaut.add(textField2);
+        panelHaut.add(labelTheme);
+        panelHaut.add(inputTheme);
         panelHaut.add(Box.createRigidArea(new Dimension(30, 0)));
-        panelHaut.add(bouton);
+        panelHaut.add(btnSendMessage);
 
         // Création de la zone de texte en bas
-        JTextArea zoneTexte = new JTextArea(10, 30);
-        JScrollPane scrollPane = new JScrollPane(zoneTexte); // ajout d'une barre de défilement
+        inputAreaMessage = new JTextArea(10, 30);
+        JScrollPane scrollPane = new JScrollPane(inputAreaMessage); // ajout d'une barre de défilement
 
         // Ajout des panneaux au panneau principal
         panelPrincipal.add(panelHaut, BorderLayout.NORTH);
@@ -200,6 +221,23 @@ public class Bavard_Interface extends JFrame{
 
         setContentPane(panelPrincipal); // affectation du panneau principal à la fenêtre
 
+    }
+
+    private void btnSendMessageListener(ActionEvent e) {
+        System.out.println("------------ Les destinataires de " + this.getCurrentBavard().getPseudo() + " :");
+        System.out.println(this.getCurrentBavard().destinataires);
+
+        String subject = inputSubject.getText();
+        String theme = inputTheme.getText();
+        String message = inputAreaMessage.getText();
+//
+//        System.out.println(this.getCurrentBavard());
+//        System.out.println(this.getBatiment().getListeBavard());
+
+//        System.out.println( this.getBatiment().getListeBavard() );
+//        System.out.println( this.getBatiment().getConcierge() );
+
+        this.getBatiment().bavardSendMessage( this.getCurrentBavard(), subject, message );
 
 
     }

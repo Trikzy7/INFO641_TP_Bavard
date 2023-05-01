@@ -67,6 +67,20 @@ public class Bavard  implements PapotageListener{
     }
 
     @Override
+    public void newPapotage(PapotageEvent papotage) {
+        /*
+        GOAL : Ajouter l'element pl a la liste
+         */
+        papotage.getSource();
+
+        if (this.isOnLine()) {
+            System.out.println(this.getPseudo() + " a bien reçu le message");
+            System.out.println("Sujet : " + papotage.getSujet());
+            System.out.println("Corps : " + papotage.getCorps() +"\n");
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         /*
             Compare 2 bavard on their pseudo
@@ -82,17 +96,4 @@ public class Bavard  implements PapotageListener{
         return Objects.hash(pseudo, onLine, wantReceiveMessage, destinataires);
     }
 
-    @Override
-    public void newPapotage(PapotageEvent papotage) {
-        /*
-        GOAL : Ajouter l'element pl a la liste
-         */
-        papotage.getSource();
-
-        if (this.isOnLine()) {
-            System.out.println(this.getPseudo() + " a bien reçu le message");
-            System.out.println("Sujet : " + papotage.getSujet());
-            System.out.println("Corps : " + papotage.getCorps() +"\n");
-        }
-    }
 }

@@ -193,10 +193,10 @@ public class Batiment_Interface extends JFrame implements ActionListener {
             // -- If bavard already exist
             if ( !bavardAddedInList )
                 JOptionPane.showMessageDialog(this, "Le bavard " + pseudo + " existe déjà");
-//            else
-//                this.getBatiment().addBavard();
+            else
+                JOptionPane.showMessageDialog(this, "Le bavard " + pseudo + " a bien été créé");
 
-            System.out.println(this.getBatiment().getListeBavard());
+//            System.out.println(this.getBatiment().getListeBavard());
 
 
         }
@@ -221,8 +221,6 @@ public class Batiment_Interface extends JFrame implements ActionListener {
             else
                 JOptionPane.showMessageDialog(this, "Le bavard n'existe pas");
         }
-
-        System.out.println("Btn connect cliqued");
     }
 
     @Override
