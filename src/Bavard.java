@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Bavard  implements PapotageListener{
 
@@ -63,6 +64,21 @@ public class Bavard  implements PapotageListener{
             pl.newPapotage(papotage);
 
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        /*
+            Compare 2 bavard on their pseudo
+         */
+        Bavard otherBavard = (Bavard) o;
+        return this.getPseudo().equals(otherBavard.getPseudo());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pseudo, onLine, wantReceiveMessage, destinataires);
     }
 
     @Override

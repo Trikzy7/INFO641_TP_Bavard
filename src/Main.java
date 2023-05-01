@@ -37,11 +37,11 @@ public class Main {
         //new Batiment_Concierge_Interface();
 
 
-        ArrayList<Bavard> listBavardCreate = new ArrayList<Bavard>();
+
 
 //        new Bavard_Interface();
 //        new Batiment_Concierge_Interface();
-        new Batiment_Interface(listBavardCreate);
+//        new Batiment_Interface();
 
     }
 }

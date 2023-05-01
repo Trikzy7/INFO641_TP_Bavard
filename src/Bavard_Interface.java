@@ -2,10 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Bavard_Interface extends JFrame{
-    public Bavard_Interface() {
+
+
+    public Bavard_Interface(Batiment batiment, Bavard bavard) {
         super("Bavard_Interface");
 
-        int i=1;
+        int i=0;
         if (i==0) Bavard_Interface_Principal();
         if (i==1) Bavard_Interface_Write();
 
