@@ -1,44 +1,88 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Bavard_Interface extends JFrame{
 
+    // -- ATTRIBUTE
+    private Batiment batiment;
+    private Bavard currentBavard;
 
+
+    // -- GETTER AND SETTER
+    public Batiment getBatiment() {
+        return batiment;
+    }
+
+    public void setBatiment(Batiment batiment) {
+        this.batiment = batiment;
+    }
+
+    public Bavard getCurrentBavard() {
+        return currentBavard;
+    }
+
+    public void setCurrentBavard(Bavard currentBavard) {
+        this.currentBavard = currentBavard;
+    }
+
+
+    // -- MEHTODS
+
+
+    // --------------- CONSTRUCTOR INTERFACE
     public Bavard_Interface(Batiment batiment, Bavard bavard) {
         super("Bavard_Interface");
+
+
+        this.batiment = batiment;
+        this.currentBavard = bavard;
+        System.out.println(this.getBatiment().getListeBavard());
+
+        System.out.println(this.getCurrentBavard().getPseudo());
 
         int i=0;
         if (i==0) Bavard_Interface_Principal();
         if (i==1) Bavard_Interface_Write();
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
+
+
+
     }
+
+
 
     // Interface principal des bavards
     public void Bavard_Interface_Principal(){
         //setBounds(-1500, 300,850,530);
         setSize(850,530);
 
+        
         // Création panel principal
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BorderLayout());
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40)); // Marges autour du panneau
 
+        
         // Nom du bavard
-        JLabel nom = new JLabel("Nom du Bavard");
-        nom.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer le titre horizontalement
-        Font labelFont = nom.getFont();
-        nom.setFont(new Font(labelFont.getName(), Font.PLAIN, 30));
-        nom.setBorder(BorderFactory.createEmptyBorder(10,0,20,0));
-        panelPrincipal.add(nom, BorderLayout.NORTH);
+        JLabel labelNameBavard = new JLabel();
+        labelNameBavard.setText( this.getCurrentBavard().getPseudo() );
+        labelNameBavard.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer le titre horizontalement
+        Font labelFont = labelNameBavard.getFont();
+        labelNameBavard.setFont(new Font(labelFont.getName(), Font.PLAIN, 30));
+        labelNameBavard.setBorder(BorderFactory.createEmptyBorder(10,0,20,0));
+        panelPrincipal.add(labelNameBavard, BorderLayout.NORTH);
 
+        
         // Création panel de gauche
         JPanel panelContenu = new JPanel();
         panelContenu.setLayout(new BoxLayout(panelContenu, BoxLayout.PAGE_AXIS));
         panelContenu.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
+        
         // Parcours de la liste des messages que peut voir le bavard
         for (int i = 1; i <= 20; i++) {
             JLabel label = new JLabel("Ligne " + i);
@@ -49,6 +93,7 @@ public class Bavard_Interface extends JFrame{
             line.add(button, BorderLayout.EAST);
             panelContenu.add(line);
 
+            
             // Ajouter une ligne verticale après chaque ligne, sauf la dernière
             if (i < 20) {
                 panelContenu.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -56,6 +101,7 @@ public class Bavard_Interface extends JFrame{
                 panelContenu.add(Box.createRigidArea(new Dimension(0, 5)));
             }
         }
+        
 
         // Ajouter la zone de défilement autour de la zone de gauche
         JScrollPane scrollPane = new JScrollPane(panelContenu);
@@ -68,21 +114,21 @@ public class Bavard_Interface extends JFrame{
         panelBoutons.setLayout(new BoxLayout(panelBoutons, BoxLayout.PAGE_AXIS));
         panelBoutons.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10)); // Ajouter des marges
 
-        JRadioButton bouton1 = new JRadioButton("Ne plus voir les messages");
-        panelBoutons.add(bouton1);
+        JRadioButton btnHideMessage = new JRadioButton("Ne plus voir les messages");
+        panelBoutons.add(btnHideMessage);
         panelBoutons.add(Box.createRigidArea(new Dimension(0, 10))); // Ajouter un espace entre les boutons
 
-        JButton bouton2 = new JButton("Filtres");
-        panelBoutons.add(bouton2);
+        JButton btnFilter = new JButton("Filtres");
+        panelBoutons.add(btnFilter);
         panelBoutons.add(Box.createRigidArea(new Dimension(0, 10))); // Ajouter un espace entre les boutons
 
-        JButton bouton3 = new JButton("Ecire un Message");
-        panelBoutons.add(bouton3);
+        JButton btnWriteMessage = new JButton("Ecire un Message");
+        panelBoutons.add(btnWriteMessage);
 
-        JLabel enligne = new JLabel("En ligne :");
-        enligne.setBorder(BorderFactory.createEmptyBorder(20,0,10,0));
-        enligne.setFont(new Font(labelFont.getName(), Font.PLAIN, 20));
-        panelBoutons.add(enligne);
+        JLabel labelBavardOnLine = new JLabel("En ligne :");
+        labelBavardOnLine.setBorder(BorderFactory.createEmptyBorder(20,0,10,0));
+        labelBavardOnLine.setFont(new Font(labelFont.getName(), Font.PLAIN, 20));
+        panelBoutons.add(labelBavardOnLine);
 
         // Création de la zone de défilement pour les bavards en ligne
         JPanel panelContenu2 = new JPanel();

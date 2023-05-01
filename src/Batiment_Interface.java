@@ -10,7 +10,6 @@ public class Batiment_Interface extends JFrame implements ActionListener {
     private JTextField inputNameBavard;
     private JTextField inputConnectedBavard;
     private Batiment batiment;
-    private ArrayList<String> listBavardCreate = new ArrayList<String>();
 
 
     // -- GETTER AND SETTER
@@ -22,30 +21,35 @@ public class Batiment_Interface extends JFrame implements ActionListener {
         this.batiment = batiment;
     }
 
-    public ArrayList<String> getListBavardCreate() {
-        return listBavardCreate;
-    }
-
-    public void setListBavardCreate(ArrayList<String> listBavardCreate) {
-        this.listBavardCreate = listBavardCreate;
-    }
-
 
     // -- MEHTODS
     public boolean addBavardIfDoesntExist(String pseudo) {
         /*
-        Permet d'ajouter un bavard à la liste lors de la création s'il n'a pas encore été crée
+        Permet d'ajouter un bavard à la liste du batiment lors de la création s'il n'a pas encore été crée
         Return :
             - True : Si le bavard n'existe pas encore et a été ajouté à la liste
             - False : Si le bavard existe déjà
          */
 
-        if (this.getListBavardCreate().contains(pseudo))
-            return false;
-        else {
-            this.getListBavardCreate().add(pseudo);
-            return true;
+
+        boolean bavardInList = false;
+
+        // -- On parcourt la liste des bavards
+        for(Bavard b : this.getBatiment().getListeBavard()) {
+            // -- Si le bavard qu'on veut créer a déjà été créé
+            if (b.getPseudo().equals( new Bavard(pseudo).getPseudo() )) {
+                bavardInList = true;
+                System.out.println("test");
+            }
         }
+
+        if (!bavardInList)
+            // -- Ajout du bavard à la liste
+            this.getBatiment().addBavard( new Bavard(pseudo) );
+
+        System.out.println("lalalal");
+
+        return !bavardInList;
     }
 
     public boolean checkIfBavardExist(String pseudo) {
@@ -56,11 +60,33 @@ public class Batiment_Interface extends JFrame implements ActionListener {
             - False : Si le bavard n'est pas dans la liste des bavards créé
          */
 
-        return this.getListBavardCreate().contains(pseudo);
+        boolean bavardExist = false;
+
+        // -- On parcourt la liste des bavards
+        for(Bavard b : this.getBatiment().getListeBavard()) {
+            // -- Si le bavard qu'on veut créer a déjà été créé
+            if (b.getPseudo().equals( new Bavard(pseudo).getPseudo() )) {
+                bavardExist = true;
+            }
+        }
+
+        return bavardExist;
     }
 
-    // --------------- Constructor Interface
-    public Batiment_Interface( String nameBatiment ) {
+    public Bavard getBavardFromList(String pseudo) {
+        Bavard bavardToFind = null;
+
+        for (Bavard b : this.getBatiment().getListeBavard()) {
+            if (b.getPseudo().equals( new Bavard(pseudo).getPseudo() ))
+                bavardToFind = b;
+        }
+
+        return bavardToFind;
+    }
+
+
+    // --------------- CONSTRUCTOR INTERFACE
+    public Batiment_Interface( Batiment batiment ) {
 
         // -- Construct Window
         super("Batiment_Interface");
@@ -142,11 +168,11 @@ public class Batiment_Interface extends JFrame implements ActionListener {
 
 
         // -- Create Batiment
-        this.batiment = new Batiment(nameBatiment);
+        this.batiment = batiment;
     }
 
 
-    // --------------- Mehtods Binding BTN
+    // --------------- METHODS BINDING BTN
     private void btnCreateBavardListener( ActionEvent e) {
         /*
         Permet de créer un bavard
@@ -160,12 +186,18 @@ public class Batiment_Interface extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Le champ est vide");
         else {
 
+            System.out.println(this.getBatiment().getListeBavard());
             // -- Add Bavard to the list if he doesn't exist yet
             boolean bavardAddedInList = this.addBavardIfDoesntExist( pseudo );
 
             // -- If bavard already exist
             if ( !bavardAddedInList )
                 JOptionPane.showMessageDialog(this, "Le bavard " + pseudo + " existe déjà");
+//            else
+//                this.getBatiment().addBavard();
+
+            System.out.println(this.getBatiment().getListeBavard());
+
 
         }
     }
@@ -185,7 +217,8 @@ public class Batiment_Interface extends JFrame implements ActionListener {
 
             // -- If Bavard exist -> Redirect on Interface Bavard with batiment created and the current Bavard
             if (this.checkIfBavardExist(pseudo))
-                new Bavard_Interface(this.getBatiment(), new Bavard(pseudo) );
+//                System.out.println(getBavardFromList(pseudo).getPseudo());
+                new Bavard_Interface(this.getBatiment(), getBavardFromList(pseudo) );
             else
                 JOptionPane.showMessageDialog(this, "Le bavard n'existe pas");
         }

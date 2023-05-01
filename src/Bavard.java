@@ -72,6 +72,7 @@ public class Bavard  implements PapotageListener{
             Compare 2 bavard on their pseudo
          */
         Bavard otherBavard = (Bavard) o;
+
         return this.getPseudo().equals(otherBavard.getPseudo());
 
     }
