@@ -227,6 +227,9 @@ public class Bavard_Interface extends JFrame{
         System.out.println("------------ Les destinataires de " + this.getCurrentBavard().getPseudo() + " :");
         System.out.println(this.getCurrentBavard().destinataires);
 
+        System.out.println("------------ Les destinataires du concierge " + this.getCurrentBavard().destinataires.get(0) + " :");
+        System.out.println( this.getBatiment().getConcierge().destinataires);
+
         String subject = inputSubject.getText();
         String theme = inputTheme.getText();
         String message = inputAreaMessage.getText();

@@ -115,7 +115,7 @@ public class Batiment {
 
 
     public void addBavardsInListConcierge(Bavard b) {
-        if (b.isWantReceiveMessage())
+        if (b.isWantReceiveMessage() && !this.getConcierge().destinataires.contains(b))
             // Add les bavards qui veulent recevoir les messages pour le concierge
             this.getConcierge().addPapotageListener(b);
     }
