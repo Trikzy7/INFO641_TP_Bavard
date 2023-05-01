@@ -1,11 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class Batiment_Interface extends JFrame {
-    private JTextField nomBavard;
-    private JTextField connecterBavard;
+public class Batiment_Interface extends JFrame implements ActionListener {
+    private JTextField inputNameBavard;
+    private JTextField inputConnectedBavard;
 
-    public Batiment_Interface() {
+    public Batiment_Interface( ArrayList<Bavard> listBavardCreated ) {
         super("Batiment_Interface");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setBounds(-1500, 300,850,530);
@@ -16,66 +19,94 @@ public class Batiment_Interface extends JFrame {
         GridBagConstraints c = new GridBagConstraints();
 
 
-        JLabel label1 = new JLabel("Créer un Bavard : ");
+        JLabel labelCreateBavard = new JLabel("Créer un Bavard : ");
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 4;
         c.insets = new Insets(10, 10, 10, 10);
-        panel.add(label1, c);
+        panel.add(labelCreateBavard, c);
 
-        JLabel nom1 = new JLabel("Pseudo : ");
+        JLabel labelCreateBavardPseudo = new JLabel("Pseudo : ");
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
         c.insets = new Insets(10, 10, 10, 10);
-        panel.add(nom1, c);
+        panel.add(labelCreateBavardPseudo, c);
 
-        nomBavard = new JTextField(10);
+        inputNameBavard = new JTextField(10);
         c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 3;
         c.insets = new Insets(10, 10, 10, 10);
-        panel.add(nomBavard, c);
+        panel.add(inputNameBavard, c);
 
-        JButton creerBavard = new JButton("Créer Bavard");
+        JButton btnCreateBavard = new JButton("Créer Bavard");
         c.gridx = 1;
         c.gridy = 2;
         //c.gridwidth = 3;
         c.insets = new Insets(10, 10, 10, 10);
         //c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(creerBavard, c);
+        panel.add(btnCreateBavard, c);
+        btnCreateBavard.addActionListener( (event) -> btnCreateBavardListener(event) );
 
-        JLabel label2 = new JLabel("Se Connecter : ");
+        JLabel labelConnectBavard = new JLabel("Se Connecter : ");
         c.gridx = 4;
         c.gridy = 0;
         c.gridwidth = 4;
         c.insets = new Insets(10, 10, 10, 10);
-        panel.add(label2, c);
+        panel.add(labelConnectBavard, c);
 
-        JLabel nom2 = new JLabel("Pseudo : ");
+        JLabel labelConnectBavardPseudo = new JLabel("Pseudo : ");
         c.gridx = 4;
         c.gridy = 1;
         c.gridwidth = 1;
         c.insets = new Insets(10, 10, 10, 10);
-        panel.add(nom2, c);
+        panel.add(labelConnectBavardPseudo, c);
 
-        connecterBavard = new JTextField(10);
+        inputConnectedBavard = new JTextField(10);
         c.gridx = 5;
         c.gridy = 1;
         c.gridwidth = 3;
         c.insets = new Insets(10, 10, 10, 10);
-        panel.add(connecterBavard, c);
+        panel.add(inputConnectedBavard, c);
 
 
-        JButton seConnecterBavard = new JButton("Connection");
+        JButton btnConnectBavard = new JButton("Connection");
         c.gridx = 5;
         c.gridy = 2;
         //c.gridwidth = 3;
         c.insets = new Insets(10, 10, 10, 10);
-        panel.add(seConnecterBavard, c);
+        panel.add(btnConnectBavard, c);
+        btnConnectBavard.addActionListener( (event) -> btnConnectBavardListener(event) );
 
         getContentPane().add(panel);
         //pack();
         setVisible(true);
+    }
+
+    private void btnCreateBavardListener( ActionEvent e) {
+        /*
+        Permet de créer un bavard
+         */
+
+        String pseudo = inputNameBavard.getText();
+
+        if (pseudo.length() == 0) {
+            JOptionPane.showMessageDialog(this, "Le champ est vide");
+        } else {
+
+            System.out.println(pseudo);
+        }
+    }
+    private void btnConnectBavardListener( ActionEvent e) {
+        /*
+        Permet de connecter un bavard
+         */
+        System.out.println("Btn connect cliqued");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }

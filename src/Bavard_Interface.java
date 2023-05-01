@@ -5,7 +5,7 @@ public class Bavard_Interface extends JFrame{
     public Bavard_Interface() {
         super("Bavard_Interface");
 
-        int i=0;
+        int i=1;
         if (i==0) Bavard_Interface_Principal();
         if (i==1) Bavard_Interface_Write();
 

@@ -35,7 +35,13 @@ public class Main {
             // -- Test des interfaces
         //new Batiment_Interface();
         //new Batiment_Concierge_Interface();
-        new Bavard_Interface();
+
+
+        ArrayList<Bavard> listBavardCreate = new ArrayList<Bavard>();
+
+//        new Bavard_Interface();
+//        new Batiment_Concierge_Interface();
+        new Batiment_Interface(listBavardCreate);
 
     }
 }
