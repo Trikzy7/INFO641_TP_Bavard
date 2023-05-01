@@ -12,16 +12,18 @@ public class Main {
         louisArmand.addConcierge(gege);
 //
 //        // -- BAVARD
-        Bavard robert = new Bavard("Robert");
-        Bavard henry = new Bavard("Henry");
+        Bavard math = new Bavard("Math");
+        Bavard lila = new Bavard("Lila");
+        Bavard theo = new Bavard("theo");
 
 //        System.out.println(robert.equals(henry));
 
 //        System.out.println( louisArmand.getListeBavard().contains(henry) );
 
 
-        louisArmand.addBavard(robert);
-        louisArmand.addBavard(henry);
+        louisArmand.addBavard(math);
+        louisArmand.addBavard(lila);
+        louisArmand.addBavard(theo);
 
 //        for(Bavard b : louisArmand.getListeBavard()) {
 //            // -- Si le bavard qu'on veut créer a déjà été créé

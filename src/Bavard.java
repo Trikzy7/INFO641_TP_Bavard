@@ -6,6 +6,8 @@ public class Bavard  implements PapotageListener{
     private String pseudo;
     private boolean onLine;
     private boolean wantReceiveMessage;
+    private ArrayList<PapotageEvent> listMessageReceived = new ArrayList<PapotageEvent>();
+
 
     // Liste contenant 1 concierge
     ArrayList<PapotageListener> destinataires = new ArrayList<PapotageListener>();
@@ -34,9 +36,27 @@ public class Bavard  implements PapotageListener{
         this.pseudo = pseudo;
     }
 
+    public ArrayList<PapotageEvent> getListMessageReceived() {
+        return listMessageReceived;
+    }
+
+    public void setListMessageReceived(ArrayList<PapotageEvent> listMessageReceived) {
+        this.listMessageReceived = listMessageReceived;
+    }
+
+
     public Bavard(String pseudo) {
         this.pseudo = "[MOLDU] " + pseudo;
     }
+
+    public void addMessage(PapotageEvent pe) {
+        this.getListMessageReceived().add(pe);
+    }
+
+    public void removeMessage(PapotageEvent pe) {
+        this.getListMessageReceived().remove(pe);
+    }
+
 
     public void addPapotageListener(PapotageListener pl) {
         /*
@@ -69,14 +89,21 @@ public class Bavard  implements PapotageListener{
     @Override
     public void newPapotage(PapotageEvent papotage) {
         /*
-        GOAL : Ajouter l'element pl a la liste
+        GOAL : Envoyer les données à l'interface
          */
-        papotage.getSource();
+
+//        System.out.println( papotage.getSource().getClass() );
+
+        Bavard bavardSRC = (Bavard) papotage.getSource();
 
         if (this.isOnLine()) {
+            System.out.println("Source : " + bavardSRC.getPseudo() );
             System.out.println(this.getPseudo() + " a bien reçu le message");
             System.out.println("Sujet : " + papotage.getSujet());
             System.out.println("Corps : " + papotage.getCorps() +"\n");
+
+            this.addMessage(papotage);
+            System.out.println(this.getListMessageReceived());
         }
     }
 

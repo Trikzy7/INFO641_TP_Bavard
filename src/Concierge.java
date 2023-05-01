@@ -3,6 +3,8 @@ import java.util.ArrayList;
 public class Concierge implements PapotageListener {
     private String pseudo;
 
+    private ArrayList<PapotageEvent> listMessageReceived = new ArrayList<PapotageEvent>();
+
     // Liste contenant tous les bavards
     ArrayList<PapotageListener> destinataires = new ArrayList<PapotageListener>();
 
@@ -14,10 +16,25 @@ public class Concierge implements PapotageListener {
         this.pseudo = pseudo;
     }
 
+    public ArrayList<PapotageEvent> getListMessageReceived() {
+        return listMessageReceived;
+    }
+
+    public void setListMessageReceived(ArrayList<PapotageEvent> listMessageReceived) {
+        this.listMessageReceived = listMessageReceived;
+    }
+
     public Concierge(String pseudo) {
         this.pseudo = "[CONCIERGE] " + pseudo;
     }
 
+    public void addMessage(PapotageEvent pe) {
+        this.getListMessageReceived().add(pe);
+    }
+
+    public void removeMessage(PapotageEvent pe) {
+        this.getListMessageReceived().remove(pe);
+    }
 
     public void addPapotageListener(PapotageListener pl) {
         destinataires.add(pl);
@@ -38,14 +55,20 @@ public class Concierge implements PapotageListener {
 
     @Override
     public void newPapotage(PapotageEvent papotage) {
-        papotage.getSource();
 
-        System.out.println(this.getPseudo() + " a bien reçu le message");
+        Bavard bavardSRC = (Bavard) papotage.getSource();
+        System.out.println( bavardSRC.getPseudo() );
+
+        System.out.println("Source : " + this.getPseudo() + " a bien reçu le message");
         System.out.println("Sujet : " + papotage.getSujet());
         System.out.println("Corps : " + papotage.getCorps() +"\n");
+
+        this.addMessage(papotage);
+        System.out.println(this.getListMessageReceived());
 
         for (PapotageListener pl : this.destinataires) {
             pl.newPapotage(papotage);
         }
+
     }
 }
