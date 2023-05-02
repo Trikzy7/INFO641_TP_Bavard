@@ -156,27 +156,11 @@ public class Bavard_Interface extends JFrame{
         JPanel panelContenu2 = new JPanel();
         panelContenu2.setLayout(new BoxLayout(panelContenu2, BoxLayout.PAGE_AXIS));
         panelContenu2.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-
+        panelContenu2.setBackground(new Color(255, 255, 255));
         panelContenu2.add(this.listPseudoConnected);
-
-        // Parcours de la liste des bavards en ligne
-//        for (int i = 1; i <= 10; i++) {
-//            JLabel label = new JLabel("Ligne " + i);
-//            JPanel line = new JPanel(new BorderLayout());
-//            line.add(label, BorderLayout.WEST);
-//            panelContenu2.add(line);
-//
-//            // Ajouter une ligne verticale après chaque ligne, sauf la dernière
-//            if (i < 10) {
-//                panelContenu2.add(Box.createRigidArea(new Dimension(0, 5)));
-//                panelContenu2.add(new JSeparator(SwingConstants.HORIZONTAL));
-//                panelContenu2.add(Box.createRigidArea(new Dimension(0, 5)));
-//            }
-//        }
 
         // Ajouter la zone de défilement autour de la zone des bavards en ligne
         JScrollPane scrollPane2 = new JScrollPane(panelContenu2);
-        scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         // Ajout de la zone de défilement à droite
         panelBoutons.add(scrollPane2, BorderLayout.CENTER);
@@ -257,7 +241,7 @@ public class Bavard_Interface extends JFrame{
     // -- Interface pour écrire un message
     public void Bavard_Interface_Write(){
         //setBounds(-1800, 250,800,400);
-        setSize(800,400);
+        setSize(1000,400);
 
         // Création du panneau principal
         JPanel panelPrincipal = new JPanel(new BorderLayout());
@@ -266,7 +250,7 @@ public class Bavard_Interface extends JFrame{
         JPanel panelHaut = new JPanel(new FlowLayout());
 
         JButton btnBack = new JButton("Back");
-        btnBack.addActionListener( (event) -> btnSendMessageListener(event) );
+        btnBack.addActionListener( (event) -> btnBackListener(event) );
 
         JLabel labelSubject = new JLabel("Sujet : ");
         inputSubject = new JTextField(20);
@@ -323,5 +307,9 @@ public class Bavard_Interface extends JFrame{
         Bavard_Interface_Principal();
         System.out.println(this.list);
 
+    }
+
+    private void btnBackListener(ActionEvent e) {
+        Bavard_Interface_Principal();
     }
 }

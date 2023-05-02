@@ -205,7 +205,8 @@ public class Batiment {
             addBavardsInListOnLineConcierge(bavard);
 
             // -- Ajout du bavard a la liste de pseudoConnected du bâtiment
-            this.getlistPseudoConnected().addElement(bavard.getPseudo() + " <ON LINE>" );
+            if (!this.getlistPseudoConnected().contains(bavard.getPseudo() + " <ON LINE>"))
+                this.getlistPseudoConnected().addElement(bavard.getPseudo() + " <ON LINE>" );
 
 //            for (Bavard b : this.getListeBavard()) {
 //                if (b == bavard) {
