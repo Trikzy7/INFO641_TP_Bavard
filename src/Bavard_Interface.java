@@ -77,14 +77,20 @@ public class Bavard_Interface extends JFrame{
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40)); // Marges autour du panneau
 
         
-        // Nom du bavard
+        // Nom du bavard et btn refresh
+        JPanel panelHaut = new JPanel();
         JLabel labelNameBavard = new JLabel();
         labelNameBavard.setText( this.getCurrentBavard().getPseudo() );
         labelNameBavard.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer le titre horizontalement
         Font labelFont = labelNameBavard.getFont();
         labelNameBavard.setFont(new Font(labelFont.getName(), Font.PLAIN, 30));
         labelNameBavard.setBorder(BorderFactory.createEmptyBorder(10,0,20,0));
-        panelPrincipal.add(labelNameBavard, BorderLayout.NORTH);
+        JButton boutonRefreshPage = new JButton("Refresh Page");
+        panelHaut.add(labelNameBavard);
+        panelHaut.add(Box.createRigidArea(new Dimension(50, 0)));
+        panelHaut.add(boutonRefreshPage);
+        panelHaut.add(Box.createRigidArea(new Dimension(350, 0)));
+        panelPrincipal.add(panelHaut, BorderLayout.NORTH);
 
         
         // Création panel de gauche
@@ -135,7 +141,12 @@ public class Bavard_Interface extends JFrame{
 
         JButton btnWriteMessage = new JButton("Ecire un Message");
         panelBoutons.add(btnWriteMessage);
+        panelBoutons.add(Box.createRigidArea(new Dimension(0, 10))); // Ajouter un espace entre les boutons
         btnWriteMessage.addActionListener( (event) -> btnWriteMessageListerner(event) );
+
+        JButton btnRefreshOnline = new JButton("Refresh People");
+        panelBoutons.add(btnRefreshOnline);
+        //btnWriteMessage.addActionListener( (event) -> btnWriteMessageListerner(event) );
 
         JLabel labelBavardOnLine = new JLabel("En ligne :");
         labelBavardOnLine.setBorder(BorderFactory.createEmptyBorder(20,0,10,0));
@@ -224,6 +235,9 @@ public class Bavard_Interface extends JFrame{
         // Création du panneau supérieur avec un label, une zone de texte et un bouton
         JPanel panelHaut = new JPanel(new FlowLayout());
 
+        JButton btnBack = new JButton("Back");
+        btnBack.addActionListener( (event) -> btnSendMessageListener(event) );
+
         JLabel labelSubject = new JLabel("Sujet : ");
         inputSubject = new JTextField(20);
 
@@ -233,6 +247,8 @@ public class Bavard_Interface extends JFrame{
         JButton btnSendMessage = new JButton("ENVOYER");
         btnSendMessage.addActionListener( (event) -> btnSendMessageListener(event) );
 
+        panelHaut.add(btnBack);
+        panelHaut.add(Box.createRigidArea(new Dimension(10, 0)));
         panelHaut.add(labelSubject);
         panelHaut.add(inputSubject);
         panelHaut.add(Box.createRigidArea(new Dimension(30, 0)));

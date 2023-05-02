@@ -13,14 +13,20 @@ public class Batiment_Concierge_Interface extends JFrame {
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.PAGE_AXIS));
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40)); // Marges autour du panneau
 
-        // Création du titre
+
+        // Création du titre et Création btn refresh
+        JPanel panelHaut = new JPanel();
+        JButton buttonRefresh = new JButton("Refresh");
+        panelHaut.add(buttonRefresh);
         JLabel titre = new JLabel("Concierge");
         titre.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer le titre horizontalement
         Font labelFont = titre.getFont();
         int labelFontSize = 30; // taille souhaitée en points
         titre.setFont(new Font(labelFont.getName(), Font.PLAIN, labelFontSize));
         titre.setBorder(BorderFactory.createEmptyBorder(10,0,20,0));
-        panelPrincipal.add(titre);
+        panelHaut.add(titre);
+        panelHaut.add(buttonRefresh);
+        panelPrincipal.add(panelHaut);
 
         // Création panel principal
         JPanel panelContenu = new JPanel();
