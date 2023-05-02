@@ -105,11 +105,11 @@ public class Bavard_Interface extends JFrame{
 
 
             // Ajouter une ligne verticale après chaque ligne, sauf la dernière
-            if (i < 20) {
-                panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
-                panelContenuAllMessage.add(new JSeparator(SwingConstants.HORIZONTAL));
-                panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
-            }
+
+            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
+            panelContenuAllMessage.add(new JSeparator(SwingConstants.HORIZONTAL));
+            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
+
         }
 
 
@@ -186,7 +186,6 @@ public class Bavard_Interface extends JFrame{
         Permet de refresh la liste des messages reçus
          */
 
-        int i = 0;
         for (PapotageEvent pe : this.getCurrentBavard().getListMessageReceived()) {
 
             // -- Get l'envoyeur src du message
@@ -196,20 +195,21 @@ public class Bavard_Interface extends JFrame{
 
             JButton button = new JButton("Détails");
             JPanel line = new JPanel(new BorderLayout());
+
+            // -- Construct the line
             line.add(label, BorderLayout.WEST);
             button.setPreferredSize(new Dimension(80, 20)); // Définir la taille du bouton
             line.add(button, BorderLayout.EAST);
+
+            // -- panelContenuAllMessage
+                // -- Add the line to the panelContenuAllMessage
             panelContenuAllMessage.add(line);
+                // -- Take a line to separate messages
+            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
+            panelContenuAllMessage.add(new JSeparator(SwingConstants.HORIZONTAL));
+            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
 
 
-            // Ajouter une ligne verticale après chaque ligne, sauf la dernière
-            if (i < 20) {
-                panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
-                panelContenuAllMessage.add(new JSeparator(SwingConstants.HORIZONTAL));
-                panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
-            }
-
-            i++;
         }
     }
 
@@ -272,6 +272,8 @@ public class Bavard_Interface extends JFrame{
 
 //        this.inputSubject.setText(this.getCurrentBavard().getPseudo());
         this.getBatiment().bavardSendMessage( this.getCurrentBavard(), subject, message );
+
+        Bavard_Interface_Principal();
 
     }
 }
