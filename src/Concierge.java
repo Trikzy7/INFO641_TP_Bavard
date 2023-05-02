@@ -1,9 +1,12 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Concierge implements PapotageListener {
     private String pseudo;
 
     private ArrayList<PapotageEvent> listMessageReceived = new ArrayList<PapotageEvent>();
+
+    private DefaultListModel listMessageShort = new DefaultListModel();
 
     // Liste contenant tous les bavards
     ArrayList<PapotageListener> destinataires = new ArrayList<PapotageListener>();
@@ -23,6 +26,8 @@ public class Concierge implements PapotageListener {
     public void setListMessageReceived(ArrayList<PapotageEvent> listMessageReceived) {
         this.listMessageReceived = listMessageReceived;
     }
+
+    public DefaultListModel getListShort(){return listMessageShort;}
 
     public Concierge(String pseudo) {
         this.pseudo = "[CONCIERGE] " + pseudo;
@@ -64,7 +69,9 @@ public class Concierge implements PapotageListener {
         System.out.println("Corps : " + papotage.getCorps() +"\n");
 
         this.addMessage(papotage);
-        System.out.println(this.getListMessageReceived());
+        this.getListShort().addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
+
+//        System.out.println(this.getListMessageReceived());
 
         for (PapotageListener pl : this.destinataires) {
             pl.newPapotage(papotage);

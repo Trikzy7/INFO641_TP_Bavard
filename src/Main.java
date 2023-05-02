@@ -64,7 +64,7 @@ public class Main {
 //        Batiment louisArmand = new Batiment("Louis Armand");
 
 //        new Bavard_Interface();
-        new Batiment_Concierge_Interface();
+        new Batiment_Concierge_Interface(louisArmand);
         new Batiment_Interface(louisArmand);
 
     }

@@ -219,7 +219,8 @@ public class Bavard_Interface extends JFrame{
         String messageSelected = list.getSelectedValue();
         int messageSelectedId = list.getSelectedIndex();
 
-        String messageFull = this.getCurrentBavard().getListMessageReceived().get( messageSelectedId ).getSujet() + "\n\n"
+        String messageFull =  "Sujet : " + this.getCurrentBavard().getListMessageReceived().get( messageSelectedId ).getSujet() + "\n\n"
+                + "Corps : \n"
                 + this.getCurrentBavard().getListMessageReceived().get( messageSelectedId ).getCorps();
 
         JOptionPane.showMessageDialog(
@@ -230,6 +231,7 @@ public class Bavard_Interface extends JFrame{
         );
 
     }
+
 
     // -- Interface pour écrire un message
     public void Bavard_Interface_Write(){
@@ -276,6 +278,7 @@ public class Bavard_Interface extends JFrame{
 
     }
 
+    // --------------- METHODS BINDING BTN
     private void btnSendMessageListener(ActionEvent e) {
 //        System.out.println("------------ Les destinataires de " + this.getCurrentBavard().getPseudo() + " :");
 //        System.out.println(this.getCurrentBavard().destinataires);

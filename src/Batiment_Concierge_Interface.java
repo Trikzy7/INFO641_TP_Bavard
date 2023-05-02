@@ -1,10 +1,34 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class Batiment_Concierge_Interface extends JFrame {
-    public Batiment_Concierge_Interface() {
+
+    private Batiment batiment;
+
+    JPanel panelContenuAllMessage;
+    private JList<String> listMessageShortJList;
+
+    // -- GETTER AND SETTER
+    public Batiment getBatiment() {
+        return batiment;
+    }
+
+    public void setBatiment(Batiment batiment) {
+        this.batiment = batiment;
+    }
+
+
+
+    // --------------- CONSTRUCTOR INTERFACE
+    public Batiment_Concierge_Interface(Batiment batiment) {
         super("Batiment_Concierge_Interface");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        this.batiment = batiment;
+        this.listMessageShortJList = new JList(this.getBatiment().getConcierge().getListShort());
+
+        // -- Construction Window
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //setBounds(-1500, 300,850,530);
         setSize(850,530);
 
@@ -14,44 +38,33 @@ public class Batiment_Concierge_Interface extends JFrame {
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40)); // Marges autour du panneau
 
 
-        // Création du titre et Création btn refresh
+        // Création du titre et Création btn detail
         JPanel panelHaut = new JPanel();
-        JButton buttonRefresh = new JButton("Refresh");
-        panelHaut.add(buttonRefresh);
+
+        JButton btnShowMessageDetail = new JButton("Voir détail");
+        panelHaut.add(btnShowMessageDetail);
+        btnShowMessageDetail.addActionListener( (event) -> btnShowMessageDetailListener(event) );
+
         JLabel titre = new JLabel("Concierge");
         titre.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer le titre horizontalement
         Font labelFont = titre.getFont();
         int labelFontSize = 30; // taille souhaitée en points
+
         titre.setFont(new Font(labelFont.getName(), Font.PLAIN, labelFontSize));
         titre.setBorder(BorderFactory.createEmptyBorder(10,0,20,0));
         panelHaut.add(titre);
-        panelHaut.add(buttonRefresh);
+        panelHaut.add(btnShowMessageDetail);
         panelPrincipal.add(panelHaut);
 
         // Création panel principal
-        JPanel panelContenu = new JPanel();
-        panelContenu.setLayout(new BoxLayout(panelContenu, BoxLayout.PAGE_AXIS));
+        panelContenuAllMessage = new JPanel();
+        panelContenuAllMessage.setLayout(new BoxLayout(panelContenuAllMessage, BoxLayout.PAGE_AXIS));
 
-        // Parcours de la liste des messages pour les afficher
-        for (int i = 1; i <= 20; i++) {
-            JLabel label = new JLabel("Ligne " + i);
-            JButton button = new JButton("B" + i);
-            JPanel line = new JPanel(new BorderLayout());
-            line.add(label, BorderLayout.WEST);
-            button.setPreferredSize(new Dimension(60, 20)); // Définir la taille du bouton
-            line.add(button, BorderLayout.EAST);
-            panelContenu.add(line);
+        panelContenuAllMessage.add(this.listMessageShortJList);
 
-            // Ajouter une ligne verticale après chaque ligne, sauf la dernière
-            if (i < 20) {
-                panelContenu.add(Box.createRigidArea(new Dimension(0, 5)));
-                panelContenu.add(new JSeparator(SwingConstants.HORIZONTAL));
-                panelContenu.add(Box.createRigidArea(new Dimension(0, 5)));
-            }
-        }
 
         // Ajouter la zone de défilement autour de la zone centrale
-        JScrollPane scrollPane = new JScrollPane(panelContenu);
+        JScrollPane scrollPane = new JScrollPane(panelContenuAllMessage);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         panelPrincipal.add(scrollPane);
@@ -60,5 +73,20 @@ public class Batiment_Concierge_Interface extends JFrame {
         setVisible(true);
     }
 
+    private void btnShowMessageDetailListener(ActionEvent e) {
+        String messageSelected = this.listMessageShortJList.getSelectedValue();
+        int messageSelectedId = this.listMessageShortJList.getSelectedIndex();
+
+        String messageFull = "Sujet : " + this.getBatiment().getConcierge().getListMessageReceived().get( messageSelectedId ).getSujet() + "\n\n"
+                + "Corps : \n"
+                + this.getBatiment().getConcierge().getListMessageReceived().get( messageSelectedId ).getCorps();
+
+        JOptionPane.showMessageDialog(
+                this,
+                messageFull,
+                messageSelected,
+                JOptionPane.PLAIN_MESSAGE
+        );
+    }
 
 }

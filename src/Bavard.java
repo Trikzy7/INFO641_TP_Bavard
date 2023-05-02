@@ -106,7 +106,7 @@ public class Bavard  implements PapotageListener{
 
             this.addMessage(papotage);
             this.getListShort().addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
-            System.out.println(this.getListMessageReceived());
+//            System.out.println(this.getListMessageReceived());
         }
     }
 
