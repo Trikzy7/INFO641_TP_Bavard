@@ -14,7 +14,7 @@ public class Main {
 //        // -- BAVARD
         Bavard math = new Bavard("Math");
         Bavard lila = new Bavard("Lila");
-        Bavard theo = new Bavard("theo");
+        Bavard theo = new Bavard("Theo");
 
 //        System.out.println(robert.equals(henry));
 
