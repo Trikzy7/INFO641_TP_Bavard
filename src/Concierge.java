@@ -110,7 +110,6 @@ public class Concierge implements PapotageListener, OnLineBavardListener {
 
         Bavard bavardSRC = (Bavard) online.getSource();
 
-
         System.out.println("Source connected : " + bavardSRC.getPseudo() );
         System.out.println(this.getPseudo() + " a bien reçu la notif");
 

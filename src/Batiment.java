@@ -205,8 +205,21 @@ public class Batiment {
             addBavardsInListOnLineConcierge(bavard);
 
             // -- Ajout du bavard a la liste de pseudoConnected du bâtiment
-            if (!this.getlistPseudoConnected().contains(bavard.getPseudo() + " <ON LINE>"))
+            if (!this.getlistPseudoConnected().contains(bavard.getPseudo() + " <ON LINE>")){
                 this.getlistPseudoConnected().addElement(bavard.getPseudo() + " <ON LINE>" );
+
+                System.out.println(bavard.destinataires);
+
+                // -- Envoyer un message au concierge pour dire que le bavard est connecté
+                for (Bavard b : this.getListeBavard()) {
+                    if (b == bavard) {
+                        b.generateNewPapotage(b.getPseudo() + " connexion", b.getPseudo() + " vient de se connecter");
+                    }
+                }
+
+            }
+
+
 
 //            for (Bavard b : this.getListeBavard()) {
 //                if (b == bavard) {
@@ -215,9 +228,31 @@ public class Batiment {
 //            }
         }
 
-        System.out.println(bavard.destinatairesOnLine);
+//        System.out.println(bavard.destinatairesOnLine);
     }
 
+    public void bavardSendNotifyDeconnexion(Bavard bavard) {
 
+        // -- Ajout du concierge a la listOnLine du bavard
+        removeConciergeInListOnLineBavard(bavard);
+
+        // -- Ajout du bavard a la listOnLine du concierge
+        removeBavardsInListOnLineConcierge(bavard);
+
+        // -- Ajout du bavard a la liste de pseudoConnected du bâtiment
+        if (this.getlistPseudoConnected().contains(bavard.getPseudo() + " <ON LINE>")){
+            this.getlistPseudoConnected().removeElement(bavard.getPseudo() + " <ON LINE>" );
+
+//                System.out.println(bavard.destinataires);
+
+            // -- Envoyer un message au concierge pour dire que le bavard est connecté
+            for (Bavard b : this.getListeBavard()) {
+                if (b == bavard) {
+                    b.generateNewPapotage(b.getPseudo() + " deconnexion", b.getPseudo() + " vient de se déconnecter");
+                }
+            }
+        }
+
+    }
 
 }

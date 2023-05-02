@@ -52,14 +52,16 @@ public class Bavard_Interface extends JFrame{
 
         this.getCurrentBavard().setOnLine(true);
 
+        // -- Default : tous les bavards veulent recevoir les messages
+        for (Bavard b : this.getBatiment().getListeBavard()) {
+            this.getBatiment().receiveMessageBavard(b, true);
+        }
+
         // -- Le bavard envoie une notif aux autres pour dire qu'il est connecte
         this.getBatiment().bavardSendNotifyConnexion( this.getCurrentBavard() );
         this.listPseudoConnected = new JList(this.batiment.getlistPseudoConnected());
 
-        // -- Default : tous les bavards veulent recevoir les messages
-        for(Bavard b : this.getBatiment().getListeBavard()) {
-            this.getBatiment().receiveMessageBavard(b, true);
-        }
+
 
 //        System.out.println(this.getBatiment().getListeBavard());
 
@@ -103,7 +105,7 @@ public class Bavard_Interface extends JFrame{
         panelHaut.add(btnDeco);
         panelHaut.add(Box.createRigidArea(new Dimension(350, 0)));
         panelPrincipal.add(panelHaut, BorderLayout.NORTH);
-        btnDeco.addActionListener( (event) -> btnFilterListener(event) );
+        btnDeco.addActionListener( (event) -> btnDecoListener(event) );
 
 
         // Création panel de gauche
@@ -235,6 +237,18 @@ public class Bavard_Interface extends JFrame{
             this.batiment.receiveMessageBavard(this.currentBavard, true);
         }
 
+    }
+
+    private void btnDecoListener(ActionEvent e){
+
+        this.getBatiment().bavardSendNotifyDeconnexion(this.getCurrentBavard());
+        this.getCurrentBavard().setOnLine(false);
+
+        this.getCurrentBavard().getListMessageReceived().removeAll( this.getCurrentBavard().getListMessageReceived() );
+        this.getCurrentBavard().getListShort().removeAllElements();
+
+
+        dispose();
     }
 
 
