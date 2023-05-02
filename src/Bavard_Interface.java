@@ -12,7 +12,7 @@ public class Bavard_Interface extends JFrame{
     private JTextArea inputAreaMessage;
     private Batiment batiment;
     private Bavard currentBavard;
-    private JList list;
+    private JList<String> list;
 
 
     // -- GETTER AND SETTER
@@ -45,7 +45,7 @@ public class Bavard_Interface extends JFrame{
         this.currentBavard = bavard;
 
         // -- Add the list message received du bavard a notre JList
-        this.list = new JList(currentBavard.getListeCourte());
+        this.list = new JList(currentBavard.getListShort());
 
         this.getCurrentBavard().setOnLine(true);
 
@@ -62,7 +62,7 @@ public class Bavard_Interface extends JFrame{
 
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setResizable(false);
+        setResizable(true);
         setVisible(true);
 
     }
@@ -89,12 +89,14 @@ public class Bavard_Interface extends JFrame{
         Font labelFont = labelNameBavard.getFont();
         labelNameBavard.setFont(new Font(labelFont.getName(), Font.PLAIN, 30));
         labelNameBavard.setBorder(BorderFactory.createEmptyBorder(10,0,20,0));
-        JButton boutonRefreshPage = new JButton("Refresh Page");
+
+        JButton btnShowMessageDetail = new JButton("Voir détail");
         panelHaut.add(labelNameBavard);
         panelHaut.add(Box.createRigidArea(new Dimension(50, 0)));
-        panelHaut.add(boutonRefreshPage);
+        panelHaut.add(btnShowMessageDetail);
         panelHaut.add(Box.createRigidArea(new Dimension(350, 0)));
         panelPrincipal.add(panelHaut, BorderLayout.NORTH);
+        btnShowMessageDetail.addActionListener( (event) -> btnShowMessageDetailListener(event) );
 
 
         // Création panel de gauche
@@ -103,30 +105,6 @@ public class Bavard_Interface extends JFrame{
         panelContenuAllMessage.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
         panelContenuAllMessage.add(this.list);
-
-        // Parcours de la liste des messages que peut voir le bavard
-//        for (int i = 1; i <= 2; i++) {
-//
-//            JLabel label = new JLabel("Ligne " + i);
-//            JButton button = new JButton("Détails");
-//
-//            JPanel line = new JPanel(new BorderLayout());
-//            line.add(label, BorderLayout.WEST);
-//            button.setPreferredSize(new Dimension(80, 20)); // Définir la taille du bouton
-//            line.add(button, BorderLayout.EAST);
-//
-//            panelContenuAllMessage.add(line);
-//
-//
-//            // Ajouter une ligne verticale après chaque ligne, sauf la dernière
-//
-//            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
-//            panelContenuAllMessage.add(new JSeparator(SwingConstants.HORIZONTAL));
-//            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
-//
-//        }
-
-
 
 
 
@@ -234,6 +212,22 @@ public class Bavard_Interface extends JFrame{
 
 
         }
+
+    }
+
+    private void btnShowMessageDetailListener(ActionEvent e) {
+        String messageSelected = list.getSelectedValue();
+        int messageSelectedId = list.getSelectedIndex();
+
+        String messageFull = this.getCurrentBavard().getListMessageReceived().get( messageSelectedId ).getSujet() + "\n\n"
+                + this.getCurrentBavard().getListMessageReceived().get( messageSelectedId ).getCorps();
+
+        JOptionPane.showMessageDialog(
+                this,
+                messageFull,
+                messageSelected,
+                JOptionPane.PLAIN_MESSAGE
+        );
 
     }
 

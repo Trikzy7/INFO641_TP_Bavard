@@ -8,8 +8,8 @@ public class Bavard  implements PapotageListener{
     private boolean onLine;
     private boolean wantReceiveMessage;
     private ArrayList<PapotageEvent> listMessageReceived = new ArrayList<PapotageEvent>();
-    private DefaultListModel listeCourte = new DefaultListModel();
-public DefaultListModel getListeCourte(){return listeCourte;}
+    private DefaultListModel listMessageShort = new DefaultListModel();
+    public DefaultListModel getListShort(){return listMessageShort;}
 
     // Liste contenant 1 concierge
     ArrayList<PapotageListener> destinataires = new ArrayList<PapotageListener>();
@@ -105,7 +105,7 @@ public DefaultListModel getListeCourte(){return listeCourte;}
             System.out.println("Corps : " + papotage.getCorps() +"\n");
 
             this.addMessage(papotage);
-            this.listeCourte.addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
+            this.getListShort().addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
             System.out.println(this.getListMessageReceived());
         }
     }
