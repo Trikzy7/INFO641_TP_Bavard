@@ -12,6 +12,7 @@ public class Bavard_Interface extends JFrame{
     private JTextArea inputAreaMessage;
     private Batiment batiment;
     private Bavard currentBavard;
+    private JList list;
 
 
     // -- GETTER AND SETTER
@@ -42,6 +43,9 @@ public class Bavard_Interface extends JFrame{
 
         this.batiment = batiment;
         this.currentBavard = bavard;
+
+        // -- Add the list message received du bavard a notre JList
+        this.list = new JList(currentBavard.getListeCourte());
 
         this.getCurrentBavard().setOnLine(true);
 
@@ -86,31 +90,39 @@ public class Bavard_Interface extends JFrame{
         labelNameBavard.setBorder(BorderFactory.createEmptyBorder(10,0,20,0));
         panelPrincipal.add(labelNameBavard, BorderLayout.NORTH);
 
-        
+
         // Création panel de gauche
         panelContenuAllMessage = new JPanel();
         panelContenuAllMessage.setLayout(new BoxLayout(panelContenuAllMessage, BoxLayout.PAGE_AXIS));
         panelContenuAllMessage.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
+        panelContenuAllMessage.add(this.list);
 
         // Parcours de la liste des messages que peut voir le bavard
-        for (int i = 1; i <= 20; i++) {
-            JLabel label = new JLabel("Ligne " + i);
-            JButton button = new JButton("Détails");
-            JPanel line = new JPanel(new BorderLayout());
-            line.add(label, BorderLayout.WEST);
-            button.setPreferredSize(new Dimension(80, 20)); // Définir la taille du bouton
-            line.add(button, BorderLayout.EAST);
-            panelContenuAllMessage.add(line);
+//        for (int i = 1; i <= 2; i++) {
+//
+//            JLabel label = new JLabel("Ligne " + i);
+//            JButton button = new JButton("Détails");
+//
+//            JPanel line = new JPanel(new BorderLayout());
+//            line.add(label, BorderLayout.WEST);
+//            button.setPreferredSize(new Dimension(80, 20)); // Définir la taille du bouton
+//            line.add(button, BorderLayout.EAST);
+//
+//            panelContenuAllMessage.add(line);
+//
+//
+//            // Ajouter une ligne verticale après chaque ligne, sauf la dernière
+//
+//            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
+//            panelContenuAllMessage.add(new JSeparator(SwingConstants.HORIZONTAL));
+//            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
+//
+//        }
 
 
-            // Ajouter une ligne verticale après chaque ligne, sauf la dernière
 
-            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
-            panelContenuAllMessage.add(new JSeparator(SwingConstants.HORIZONTAL));
-            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
 
-        }
 
 
         // Ajouter la zone de défilement autour de la zone de gauche
@@ -194,9 +206,9 @@ public class Bavard_Interface extends JFrame{
             JLabel label = new JLabel(bavardSRC.getPseudo() + " : " + pe.getSujet());
 
             JButton button = new JButton("Détails");
-            JPanel line = new JPanel(new BorderLayout());
 
             // -- Construct the line
+            JPanel line = new JPanel(new BorderLayout());
             line.add(label, BorderLayout.WEST);
             button.setPreferredSize(new Dimension(80, 20)); // Définir la taille du bouton
             line.add(button, BorderLayout.EAST);
@@ -211,6 +223,7 @@ public class Bavard_Interface extends JFrame{
 
 
         }
+
     }
 
     // -- Interface pour écrire un message
@@ -274,6 +287,7 @@ public class Bavard_Interface extends JFrame{
         this.getBatiment().bavardSendMessage( this.getCurrentBavard(), subject, message );
 
         Bavard_Interface_Principal();
+        System.out.println(this.list);
 
     }
 }

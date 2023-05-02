@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -7,7 +8,8 @@ public class Bavard  implements PapotageListener{
     private boolean onLine;
     private boolean wantReceiveMessage;
     private ArrayList<PapotageEvent> listMessageReceived = new ArrayList<PapotageEvent>();
-
+    private DefaultListModel listeCourte = new DefaultListModel();
+public DefaultListModel getListeCourte(){return listeCourte;}
 
     // Liste contenant 1 concierge
     ArrayList<PapotageListener> destinataires = new ArrayList<PapotageListener>();
@@ -103,6 +105,7 @@ public class Bavard  implements PapotageListener{
             System.out.println("Corps : " + papotage.getCorps() +"\n");
 
             this.addMessage(papotage);
+            this.listeCourte.addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
             System.out.println(this.getListMessageReceived());
         }
     }
