@@ -1,15 +1,20 @@
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class Concierge implements PapotageListener {
+public class Concierge implements PapotageListener, OnLineBavardListener {
     private String pseudo;
 
     private ArrayList<PapotageEvent> listMessageReceived = new ArrayList<PapotageEvent>();
 
     private DefaultListModel listMessageShort = new DefaultListModel();
 
+    private DefaultListModel listPseudoConnected = new DefaultListModel();
+
     // Liste contenant tous les bavards
     ArrayList<PapotageListener> destinataires = new ArrayList<PapotageListener>();
+
+    // Liste contenant tous les bavards
+    ArrayList<OnLineBavardListener> destinatairesOnLine = new ArrayList<OnLineBavardListener>();
 
     public String getPseudo() {
         return pseudo;
@@ -29,6 +34,8 @@ public class Concierge implements PapotageListener {
 
     public DefaultListModel getListShort(){return listMessageShort;}
 
+    public DefaultListModel getlistPseudoConnected(){return listPseudoConnected;}
+
     public Concierge(String pseudo) {
         this.pseudo = "[CONCIERGE] " + pseudo;
     }
@@ -41,6 +48,8 @@ public class Concierge implements PapotageListener {
         this.getListMessageReceived().remove(pe);
     }
 
+
+    // -- Methods Papotage
     public void addPapotageListener(PapotageListener pl) {
         destinataires.add(pl);
     }
@@ -56,7 +65,6 @@ public class Concierge implements PapotageListener {
             pl.newPapotage(papotage);
         }
     }
-
 
     @Override
     public void newPapotage(PapotageEvent papotage) {
@@ -77,5 +85,42 @@ public class Concierge implements PapotageListener {
             pl.newPapotage(papotage);
         }
 
+    }
+
+
+    // -- Methods OnLine
+    public void addOnLineListener(OnLineBavardListener ol) {
+        this.destinatairesOnLine.add(ol);
+    }
+
+    public void removeOnLineListener(OnLineBavardListener ol) {
+        this.destinatairesOnLine.remove(ol);
+    }
+
+    public void generateNewOnLine(Bavard bavard) {
+        OnLineBavardEvent online = new OnLineBavardEvent(this, bavard);
+
+        for (OnLineBavardListener ol : this.destinatairesOnLine) {
+            ol.newOnLine(online);
+        }
+    }
+
+    @Override
+    public void newOnLine(OnLineBavardEvent online) {
+
+        Bavard bavardSRC = (Bavard) online.getSource();
+
+
+        System.out.println("Source connected : " + bavardSRC.getPseudo() );
+        System.out.println(this.getPseudo() + " a bien reçu la notif");
+
+//        this.addMessage(papotage);
+//        this.getListShort().addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
+
+//        System.out.println(this.getListMessageReceived());
+
+        for (OnLineBavardListener ol : this.destinatairesOnLine) {
+            ol.newOnLine(online);
+        }
     }
 }

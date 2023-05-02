@@ -14,6 +14,8 @@ public class Bavard_Interface extends JFrame{
     private Bavard currentBavard;
     private JList<String> list;
 
+    private JList<String> listPseudoConnected;
+
 
     // -- GETTER AND SETTER
     public Batiment getBatiment() {
@@ -49,12 +51,16 @@ public class Bavard_Interface extends JFrame{
 
         this.getCurrentBavard().setOnLine(true);
 
+        // -- Le bavard envoie une notif aux autres pour dire qu'il est connecte
+        this.getBatiment().bavardSendNotifyConnexion( this.getCurrentBavard() );
+        this.listPseudoConnected = new JList(this.batiment.getlistPseudoConnected());
+
+        // -- Default : tous les bavards veulent recevoir les messages
         for(Bavard b : this.getBatiment().getListeBavard()) {
             this.getBatiment().receiveMessageBavard(b, true);
-//            System.out.println(b.getPseudo());
         }
 
-        System.out.println(this.getBatiment().getListeBavard());
+//        System.out.println(this.getBatiment().getListeBavard());
 
 
         // On met l'interface principal du bavard
@@ -148,20 +154,22 @@ public class Bavard_Interface extends JFrame{
         panelContenu2.setLayout(new BoxLayout(panelContenu2, BoxLayout.PAGE_AXIS));
         panelContenu2.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
-        // Parcours de la liste des bavards en ligne
-        for (int i = 1; i <= 10; i++) {
-            JLabel label = new JLabel("Ligne " + i);
-            JPanel line = new JPanel(new BorderLayout());
-            line.add(label, BorderLayout.WEST);
-            panelContenu2.add(line);
+        panelContenu2.add(this.listPseudoConnected);
 
-            // Ajouter une ligne verticale après chaque ligne, sauf la dernière
-            if (i < 10) {
-                panelContenu2.add(Box.createRigidArea(new Dimension(0, 5)));
-                panelContenu2.add(new JSeparator(SwingConstants.HORIZONTAL));
-                panelContenu2.add(Box.createRigidArea(new Dimension(0, 5)));
-            }
-        }
+        // Parcours de la liste des bavards en ligne
+//        for (int i = 1; i <= 10; i++) {
+//            JLabel label = new JLabel("Ligne " + i);
+//            JPanel line = new JPanel(new BorderLayout());
+//            line.add(label, BorderLayout.WEST);
+//            panelContenu2.add(line);
+//
+//            // Ajouter une ligne verticale après chaque ligne, sauf la dernière
+//            if (i < 10) {
+//                panelContenu2.add(Box.createRigidArea(new Dimension(0, 5)));
+//                panelContenu2.add(new JSeparator(SwingConstants.HORIZONTAL));
+//                panelContenu2.add(Box.createRigidArea(new Dimension(0, 5)));
+//            }
+//        }
 
         // Ajouter la zone de défilement autour de la zone des bavards en ligne
         JScrollPane scrollPane2 = new JScrollPane(panelContenu2);
