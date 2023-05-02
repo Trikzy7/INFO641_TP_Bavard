@@ -10,6 +10,7 @@ public class Bavard_Interface extends JFrame{
     private JTextField inputSubject;
     private JTextField inputTheme;
     private JTextArea inputAreaMessage;
+    private JRadioButton btnHideMessage ;
     private Batiment batiment;
     private Bavard currentBavard;
     private JList<String> list;
@@ -81,7 +82,7 @@ public class Bavard_Interface extends JFrame{
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40)); // Marges autour du panneau
 
         
-        // Nom du bavard et btn refresh
+        // Nom du bavard et btn detail
         JPanel panelHaut = new JPanel();
         JLabel labelNameBavard = new JLabel();
         labelNameBavard.setText( this.getCurrentBavard().getPseudo() );
@@ -90,39 +91,45 @@ public class Bavard_Interface extends JFrame{
         labelNameBavard.setFont(new Font(labelFont.getName(), Font.PLAIN, 30));
         labelNameBavard.setBorder(BorderFactory.createEmptyBorder(10,0,20,0));
 
-        JButton btnShowMessageDetail = new JButton("Voir détail");
+        JButton btnDeco = new JButton("Se déconnecter");
         panelHaut.add(labelNameBavard);
         panelHaut.add(Box.createRigidArea(new Dimension(50, 0)));
-        panelHaut.add(btnShowMessageDetail);
+        panelHaut.add(btnDeco);
         panelHaut.add(Box.createRigidArea(new Dimension(350, 0)));
         panelPrincipal.add(panelHaut, BorderLayout.NORTH);
-        btnShowMessageDetail.addActionListener( (event) -> btnShowMessageDetailListener(event) );
+        btnDeco.addActionListener( (event) -> btnFilterListener(event) );
 
 
         // Création panel de gauche
         panelContenuAllMessage = new JPanel();
-        panelContenuAllMessage.setLayout(new BoxLayout(panelContenuAllMessage, BoxLayout.PAGE_AXIS));
         panelContenuAllMessage.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        panelContenuAllMessage.setBackground(new Color(255,255,255));
+
 
         panelContenuAllMessage.add(this.list);
 
-
-
-
         // Ajouter la zone de défilement autour de la zone de gauche
         JScrollPane scrollPane = new JScrollPane(panelContenuAllMessage);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+        verticalScrollBar.setValue(verticalScrollBar.getMaximum());
 
         panelPrincipal.add(scrollPane, BorderLayout.CENTER);
+
 
         // Ajouter un panneau pour les boutons à droite de la zone de défilement
         JPanel panelBoutons = new JPanel();
         panelBoutons.setLayout(new BoxLayout(panelBoutons, BoxLayout.PAGE_AXIS));
         panelBoutons.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10)); // Ajouter des marges
 
-        JRadioButton btnHideMessage = new JRadioButton("Ne plus voir les messages");
+        JButton btnShowMessageDetail = new JButton("Voir détails");
+        panelBoutons.add(btnShowMessageDetail);
+        panelBoutons.add(Box.createRigidArea(new Dimension(0, 10))); // Ajouter un espace entre les boutons
+        btnShowMessageDetail.addActionListener( (event) -> btnShowMessageDetailListener(event) );
+
+        btnHideMessage = new JRadioButton("Ne plus voir les messages");
         panelBoutons.add(btnHideMessage);
         panelBoutons.add(Box.createRigidArea(new Dimension(0, 10))); // Ajouter un espace entre les boutons
+        btnHideMessage.addActionListener( (event) -> btnNotViewMessageListener(event) );
 
         JButton btnFilter = new JButton("Filtres");
         panelBoutons.add(btnFilter);
@@ -133,10 +140,6 @@ public class Bavard_Interface extends JFrame{
         panelBoutons.add(btnWriteMessage);
         panelBoutons.add(Box.createRigidArea(new Dimension(0, 10))); // Ajouter un espace entre les boutons
         btnWriteMessage.addActionListener( (event) -> btnWriteMessageListerner(event) );
-
-        JButton btnRefreshOnline = new JButton("Refresh People");
-        panelBoutons.add(btnRefreshOnline);
-        //btnWriteMessage.addActionListener( (event) -> btnWriteMessageListerner(event) );
 
         JLabel labelBavardOnLine = new JLabel("En ligne :");
         labelBavardOnLine.setBorder(BorderFactory.createEmptyBorder(20,0,10,0));
@@ -229,6 +232,16 @@ public class Bavard_Interface extends JFrame{
                 messageSelected,
                 JOptionPane.PLAIN_MESSAGE
         );
+
+    }
+
+    private void btnNotViewMessageListener(ActionEvent e){
+        if (btnHideMessage.isSelected()){
+            this.batiment.receiveMessageBavard(this.currentBavard, false);
+        }
+        else {
+            this.batiment.receiveMessageBavard(this.currentBavard, true);
+        }
 
     }
 

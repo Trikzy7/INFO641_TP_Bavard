@@ -33,8 +33,7 @@ public class Batiment_Concierge_Interface extends JFrame {
         setSize(850,530);
 
         // Création panel principal
-        JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.PAGE_AXIS));
+        JPanel panelPrincipal = new JPanel(new BorderLayout());
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40)); // Marges autour du panneau
 
 
@@ -48,26 +47,28 @@ public class Batiment_Concierge_Interface extends JFrame {
         JLabel titre = new JLabel("Concierge");
         titre.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer le titre horizontalement
         Font labelFont = titre.getFont();
-        int labelFontSize = 30; // taille souhaitée en points
-
-        titre.setFont(new Font(labelFont.getName(), Font.PLAIN, labelFontSize));
-        titre.setBorder(BorderFactory.createEmptyBorder(10,0,20,0));
+        titre.setFont(new Font(labelFont.getName(), Font.PLAIN, 30));
+        titre.setBorder(BorderFactory.createEmptyBorder(10,0,20,10));
         panelHaut.add(titre);
         panelHaut.add(btnShowMessageDetail);
-        panelPrincipal.add(panelHaut);
+        panelPrincipal.add(panelHaut, BorderLayout.NORTH);
 
         // Création panel principal
         panelContenuAllMessage = new JPanel();
-        panelContenuAllMessage.setLayout(new BoxLayout(panelContenuAllMessage, BoxLayout.PAGE_AXIS));
+        panelContenuAllMessage.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        panelContenuAllMessage.setBackground(new Color(255,255,255));
+
 
         panelContenuAllMessage.add(this.listMessageShortJList);
 
-
-        // Ajouter la zone de défilement autour de la zone centrale
+        // Ajouter la zone de défilement autour de la zone de gauche
         JScrollPane scrollPane = new JScrollPane(panelContenuAllMessage);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+        verticalScrollBar.setValue(verticalScrollBar.getMaximum());
 
-        panelPrincipal.add(scrollPane);
+
+
+        panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 
         setContentPane(panelPrincipal);
         setVisible(true);
