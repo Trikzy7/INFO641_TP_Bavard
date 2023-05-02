@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Batiment {
@@ -6,6 +7,9 @@ public class Batiment {
 
     Concierge concierge = null;
     ArrayList<Bavard> listeBavard = new ArrayList<Bavard>();
+
+    private DefaultListModel listPseudoConnected = new DefaultListModel();
+    public DefaultListModel getlistPseudoConnected(){return listPseudoConnected;}
 
     public Concierge getConcierge() {
         return concierge;
@@ -79,6 +83,8 @@ public class Batiment {
         }
     }
 
+
+    // --------------------- METHODS SEND MESSAGE
     public void receiveMessageBavard (Bavard bavard, boolean wantReceiveMessage) {
 
         if (wantReceiveMessage) {
@@ -113,7 +119,6 @@ public class Batiment {
 
     }
 
-
     public void addBavardsInListConcierge(Bavard b) {
         if (b.isWantReceiveMessage() && !this.getConcierge().destinataires.contains(b))
             // Add les bavards qui veulent recevoir les messages pour le concierge
@@ -124,6 +129,18 @@ public class Batiment {
         // Add le concierge pour les bavards qui veulent recevoir les messages
         if (!b.destinataires.contains(this.getConcierge()))
             b.addPapotageListener(this.getConcierge());
+    }
+
+    public void removeBavardsInListConcierge(Bavard b) {
+        if (!b.isWantReceiveMessage())
+            // Add les bavards qui veulent recevoir les messages pour le concierge
+            this.getConcierge().removePapotageListener(b);
+    }
+
+    public void removeConciergeInListBavard(Bavard b) {
+        if (!b.isWantReceiveMessage())
+            // Add le concierge pour les bavards qui veulent recevoir les messages
+            b.removePapotageListener(this.getConcierge());
     }
 
     public Bavard getBavardFromList(Bavard bavardParam) {
@@ -140,18 +157,6 @@ public class Batiment {
         return bavardFound;
     }
 
-    public void removeBavardsInListConcierge(Bavard b) {
-        if (!b.isWantReceiveMessage())
-            // Add les bavards qui veulent recevoir les messages pour le concierge
-            this.getConcierge().removePapotageListener(b);
-    }
-
-    public void removeConciergeInListBavard(Bavard b) {
-        if (!b.isWantReceiveMessage())
-            // Add le concierge pour les bavards qui veulent recevoir les messages
-            b.removePapotageListener(this.getConcierge());
-    }
-
     public void bavardSendMessage(Bavard bavard, String sujet, String corps) {
         if (bavard.isOnLine()) {
             for (Bavard b : this.getListeBavard()) {
@@ -165,5 +170,53 @@ public class Batiment {
     public void conciergeSendMessage(String sujet, String corps) {
         this.getConcierge().generateNewPapotage(sujet, corps);
     }
+
+
+    // --------------------- METHODS NOTIFY CONNEXION
+    public void addBavardsInListOnLineConcierge(Bavard b) {
+        /*
+        Permet d'ajouter un bavard dans la liste des personnes onLine s'il n'est pas déjà dedans
+         */
+        if (!this.getConcierge().destinatairesOnLine.contains(b))
+            this.getConcierge().addOnLineListener(b);
+    }
+
+    public void addConciergeInListOnLineBavard(Bavard b) {
+        // Add le concierge pour les bavards qui veulent recevoir les messages
+        if (!b.destinatairesOnLine.contains(this.getConcierge()))
+            b.addOnLineListener(this.getConcierge());
+    }
+
+    public void removeBavardsInListOnLineConcierge(Bavard b) {
+            this.getConcierge().removeOnLineListener(b);
+    }
+
+    public void removeConciergeInListOnLineBavard(Bavard b) {
+        b.removeOnLineListener(this.getConcierge());
+    }
+
+    public void bavardSendNotifyConnexion(Bavard bavard) {
+        if (bavard.isOnLine()) {
+
+            // -- Ajout du concierge a la listOnLine du bavard
+            addConciergeInListOnLineBavard(bavard);
+
+            // -- Ajout du bavard a la listOnLine du concierge
+            addBavardsInListOnLineConcierge(bavard);
+
+            // -- Ajout du bavard a la liste de pseudoConnected du bâtiment
+            this.getlistPseudoConnected().addElement(bavard.getPseudo() + " <ON LINE>" );
+
+//            for (Bavard b : this.getListeBavard()) {
+//                if (b == bavard) {
+//                    b.generateNewOnLine(bavard);
+//                }
+//            }
+        }
+
+        System.out.println(bavard.destinatairesOnLine);
+    }
+
+
 
 }

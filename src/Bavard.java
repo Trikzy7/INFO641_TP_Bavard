@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Bavard  implements PapotageListener{
+public class Bavard  implements PapotageListener, OnLineBavardListener{
 
     private String pseudo;
     private boolean onLine;
@@ -11,8 +11,14 @@ public class Bavard  implements PapotageListener{
     private DefaultListModel listMessageShort = new DefaultListModel();
     public DefaultListModel getListShort(){return listMessageShort;}
 
+    private DefaultListModel listPseudoConnected = new DefaultListModel();
+    public DefaultListModel getlistPseudoConnected(){return listPseudoConnected;}
+
     // Liste contenant 1 concierge
     ArrayList<PapotageListener> destinataires = new ArrayList<PapotageListener>();
+
+    // Liste contenant 1 concierge
+    ArrayList<OnLineBavardListener> destinatairesOnLine = new ArrayList<OnLineBavardListener>();
 
     public boolean isOnLine() {
         return onLine;
@@ -47,6 +53,7 @@ public class Bavard  implements PapotageListener{
     }
 
 
+    // -- Constructor
     public Bavard(String pseudo) {
         this.pseudo = "[MOLDU] " + pseudo;
     }
@@ -60,6 +67,7 @@ public class Bavard  implements PapotageListener{
     }
 
 
+    // -- Methods Papotage
     public void addPapotageListener(PapotageListener pl) {
         /*
         GOAL : Ajouter l'element pl a la liste
@@ -107,6 +115,53 @@ public class Bavard  implements PapotageListener{
             this.addMessage(papotage);
             this.getListShort().addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
 //            System.out.println(this.getListMessageReceived());
+        }
+    }
+
+
+    // -- Methods OnLine
+    public void addOnLineListener(OnLineBavardListener ol){
+        /*
+        GOAL : Ajouter l'element ol a la liste destinatairesOnLine
+         */
+        this.destinatairesOnLine.add(ol);
+    }
+    public void removeOnLineListener(OnLineBavardListener ol){
+        /*
+        GOAL : Retirer l'element ol a la liste destinatairesOnLine
+         */
+        this.destinatairesOnLine.remove(ol);
+    }
+
+    public void generateNewOnLine(Bavard bavard) {
+        /*
+        GOAL : Permet qu'un bavard envoie une notification a son concierge et que le concierge réenvoie la notifications a ces bavards
+         */
+
+        OnLineBavardEvent online = new OnLineBavardEvent(this, bavard);
+
+        for (OnLineBavardListener ol : this.destinatairesOnLine) {
+            // -- Le concierge reçoit le message
+            ol.newOnLine(online);
+
+        }
+    }
+    @Override
+    public void newOnLine(OnLineBavardEvent online) {
+        /*
+        GOAL : Envoyer les données à l'interface
+         */
+
+        Bavard bavardSRC = (Bavard) online.getSource();
+
+        if (this.isOnLine()) {
+            System.out.println("Source connected : " + bavardSRC.getPseudo() );
+            System.out.println(this.getPseudo() + " a bien reçu la notif");
+
+
+            this.getlistPseudoConnected().addElement(bavardSRC.getPseudo() + "<ON LINE>" );
+
+            System.out.println(this.getlistPseudoConnected());
         }
     }
 
