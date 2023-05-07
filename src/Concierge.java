@@ -58,8 +58,8 @@ public class Concierge implements PapotageListener, OnLineBavardListener {
         destinataires.remove(pl);
     }
 
-    public void generateNewPapotage(String sujet, String corps) {
-        PapotageEvent papotage = new PapotageEvent(this, sujet, corps);
+    public void generateNewPapotage(String sujet, String theme, String corps) {
+        PapotageEvent papotage = new PapotageEvent(this, sujet,theme, corps);
 
         for (PapotageListener pl : this.destinataires) {
             pl.newPapotage(papotage);
@@ -74,6 +74,7 @@ public class Concierge implements PapotageListener, OnLineBavardListener {
 
         System.out.println("Source : " + this.getPseudo() + " a bien reçu le message");
         System.out.println("Sujet : " + papotage.getSujet());
+        System.out.println("Thème : " + papotage.getTheme());
         System.out.println("Corps : " + papotage.getCorps() +"\n");
 
         this.addMessage(papotage);

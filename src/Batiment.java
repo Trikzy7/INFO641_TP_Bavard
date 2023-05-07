@@ -157,18 +157,18 @@ public class Batiment {
         return bavardFound;
     }
 
-    public void bavardSendMessage(Bavard bavard, String sujet, String corps) {
+    public void bavardSendMessage(Bavard bavard, String sujet,String theme, String corps) {
         if (bavard.isOnLine()) {
             for (Bavard b : this.getListeBavard()) {
                 if (b == bavard) {
-                    b.generateNewPapotage(sujet, corps);
+                    b.generateNewPapotage(sujet,theme, corps);
                 }
             }
         }
     }
 
-    public void conciergeSendMessage(String sujet, String corps) {
-        this.getConcierge().generateNewPapotage(sujet, corps);
+    public void conciergeSendMessage(String sujet, String theme, String corps) {
+        this.getConcierge().generateNewPapotage(sujet,theme, corps);
     }
 
 
@@ -213,7 +213,7 @@ public class Batiment {
                 // -- Envoyer un message au concierge pour dire que le bavard est connecté
                 for (Bavard b : this.getListeBavard()) {
                     if (b == bavard) {
-                        b.generateNewPapotage(b.getPseudo() + " connexion", b.getPseudo() + " vient de se connecter");
+                        b.generateNewPapotage(b.getPseudo() + " connexion", "",b.getPseudo() + " vient de se connecter");
                     }
                 }
 
@@ -248,7 +248,7 @@ public class Batiment {
             // -- Envoyer un message au concierge pour dire que le bavard est connecté
             for (Bavard b : this.getListeBavard()) {
                 if (b == bavard) {
-                    b.generateNewPapotage(b.getPseudo() + " deconnexion", b.getPseudo() + " vient de se déconnecter");
+                    b.generateNewPapotage(b.getPseudo() + " deconnexion", "",b.getPseudo() + " vient de se déconnecter");
                 }
             }
         }

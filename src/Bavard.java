@@ -8,6 +8,25 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
     private boolean onLine;
     private boolean wantReceiveMessage;
     private ArrayList<PapotageEvent> listMessageReceived = new ArrayList<PapotageEvent>();
+    private ArrayList<String> listeTheme = new ArrayList<String>();
+    private ArrayList<String> listePeople = new ArrayList<String>();
+
+    public ArrayList<String> getListePeople() {
+        return listePeople;
+    }
+
+    public void setListePeople(ArrayList<String> listePeople) {
+        this.listePeople = listePeople;
+    }
+
+    public ArrayList<String> getlisteTheme() {
+        return listeTheme;
+    }
+
+    public void setlisteTheme(ArrayList<String> listeTheme) {
+        this.listeTheme = listeTheme;
+    }
+
     private DefaultListModel listMessageShort = new DefaultListModel();
     public DefaultListModel getListShort(){return listMessageShort;}
 
@@ -56,6 +75,11 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
     // -- Constructor
     public Bavard(String pseudo) {
         this.pseudo = "[MOLDU] " + pseudo;
+        this.getlisteTheme().add("Cinema");
+        this.getlisteTheme().add("Sport");
+        this.getlisteTheme().add("Loisir");
+        this.getlisteTheme().add("Livre");
+        this.getlisteTheme().add("Info");
     }
 
     public void addMessage(PapotageEvent pe) {
@@ -82,12 +106,12 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
         destinataires.remove(pl);
     }
 
-    public void generateNewPapotage(String sujet, String corps) {
+    public void generateNewPapotage(String sujet,String theme, String corps) {
         /*
         GOAL : Permet qu'un bavard envoie un message a son concierge et que le concierge réenvoie les messages
          */
 
-        PapotageEvent papotage = new PapotageEvent(this, sujet, corps);
+        PapotageEvent papotage = new PapotageEvent(this, sujet, theme, corps);
 
         for (PapotageListener pl : this.destinataires) {
             // -- Le concierge reçoit le message
@@ -112,8 +136,11 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
             System.out.println("Sujet : " + papotage.getSujet());
             System.out.println("Corps : " + papotage.getCorps() +"\n");
 
-            this.addMessage(papotage);
-            this.getListShort().addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
+            if ((this.getlisteTheme().contains(papotage.getTheme()))&&(this.getListePeople().contains(((Bavard) papotage.getSource()).getPseudo()))){
+                this.addMessage(papotage);
+                this.getListShort().addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
+            }
+
 //            System.out.println(this.getListMessageReceived());
         }
     }

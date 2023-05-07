@@ -8,14 +8,20 @@ public class Bavard_Interface extends JFrame{
     // -- ATTRIBUTE
     private JPanel panelContenuAllMessage;
     private JTextField inputSubject;
-    private JTextField inputTheme;
+    private JComboBox<String> inputTheme;
     private JTextArea inputAreaMessage;
     private JRadioButton btnHideMessage ;
+    private JRadioButton btnCinema;
+    private JRadioButton btnSport;
+    private JRadioButton btnLoisir;
+    private JRadioButton btnLivre;
+    private JRadioButton btnInfo;
+    private ArrayList<JRadioButton> listebtnPeople = new ArrayList<JRadioButton>();
     private Batiment batiment;
     private Bavard currentBavard;
     private JList<String> list;
-
     private JList<String> listPseudoConnected;
+
 
 
     // -- GETTER AND SETTER
@@ -139,10 +145,18 @@ public class Bavard_Interface extends JFrame{
         panelBoutons.add(Box.createRigidArea(new Dimension(0, 10))); // Ajouter un espace entre les boutons
         btnHideMessage.addActionListener( (event) -> btnNotViewMessageListener(event) );
 
-        JButton btnFilter = new JButton("Filtres");
+
+        JButton btnFilter = new JButton("Thèmes");
         panelBoutons.add(btnFilter);
         panelBoutons.add(Box.createRigidArea(new Dimension(0, 10))); // Ajouter un espace entre les boutons
         btnFilter.addActionListener( (event) -> btnFilterListener(event) );
+
+
+        JButton btnPeople = new JButton("Users");
+        panelBoutons.add(btnPeople);
+        panelBoutons.add(Box.createRigidArea(new Dimension(0, 10))); // Ajouter un espace entre les boutons
+        btnPeople.addActionListener( (event) -> btnPeopleListener(event) );
+
 
         JButton btnWriteMessage = new JButton("Ecire un Message");
         panelBoutons.add(btnWriteMessage);
@@ -180,36 +194,11 @@ public class Bavard_Interface extends JFrame{
     }
 
     private void btnFilterListener(ActionEvent e) {
-        /*
-        Permet de refresh la liste des messages reçus
-         */
+        Bavard_Interface_Filtre();
+    }
 
-        for (PapotageEvent pe : this.getCurrentBavard().getListMessageReceived()) {
-
-            // -- Get l'envoyeur src du message
-            Bavard bavardSRC = (Bavard) pe.getSource();
-
-            JLabel label = new JLabel(bavardSRC.getPseudo() + " : " + pe.getSujet());
-
-            JButton button = new JButton("Détails");
-
-            // -- Construct the line
-            JPanel line = new JPanel(new BorderLayout());
-            line.add(label, BorderLayout.WEST);
-            button.setPreferredSize(new Dimension(80, 20)); // Définir la taille du bouton
-            line.add(button, BorderLayout.EAST);
-
-            // -- panelContenuAllMessage
-                // -- Add the line to the panelContenuAllMessage
-            panelContenuAllMessage.add(line);
-                // -- Take a line to separate messages
-            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
-            panelContenuAllMessage.add(new JSeparator(SwingConstants.HORIZONTAL));
-            panelContenuAllMessage.add(Box.createRigidArea(new Dimension(0, 5)));
-
-
-        }
-
+    private void btnPeopleListener(ActionEvent e) {
+        Bavard_Interface_People();
     }
 
     private void btnShowMessageDetailListener(ActionEvent e) {
@@ -270,7 +259,11 @@ public class Bavard_Interface extends JFrame{
         inputSubject = new JTextField(20);
 
         JLabel labelTheme = new JLabel("Thème : ");
-        inputTheme = new JTextField(20);
+        String[] choices = {"Cinema", "Sport", "Loisir", "Livre", "Info"};
+        inputTheme = new JComboBox<>(choices);
+        // Changer la taille de la zone de liste déroulante
+        Dimension size = new Dimension(200, inputTheme.getPreferredSize().height);
+        inputTheme.setPreferredSize(size);
 
         JButton btnSendMessage = new JButton("ENVOYER");
         btnSendMessage.addActionListener( (event) -> btnSendMessageListener(event) );
@@ -306,7 +299,7 @@ public class Bavard_Interface extends JFrame{
 //        System.out.println( this.getBatiment().getConcierge().destinataires);
 
         String subject = inputSubject.getText();
-        String theme = inputTheme.getText();
+        String theme = (String) inputTheme.getSelectedItem();
         String message = inputAreaMessage.getText();
 //
 //        System.out.println(this.getCurrentBavard());
@@ -316,7 +309,7 @@ public class Bavard_Interface extends JFrame{
 //        System.out.println( this.getBatiment().getConcierge() );
 
 //        this.inputSubject.setText(this.getCurrentBavard().getPseudo());
-        this.getBatiment().bavardSendMessage( this.getCurrentBavard(), subject, message );
+        this.getBatiment().bavardSendMessage( this.getCurrentBavard(), subject,theme, message );
 
         Bavard_Interface_Principal();
         System.out.println(this.list);
@@ -324,6 +317,153 @@ public class Bavard_Interface extends JFrame{
     }
 
     private void btnBackListener(ActionEvent e) {
+        Bavard_Interface_Principal();
+    }
+
+    private void Bavard_Interface_Filtre(){
+        setSize(300,500);
+        JPanel panelPrincipal = new JPanel();
+
+        JButton btnback = new JButton("Back");
+        btnback.addActionListener( (event) -> btnBackListener(event) );
+
+        JLabel titre = new JLabel("Filtres");
+
+
+        // Créer cinq boutons radio
+        btnCinema = new JRadioButton("Cinema");
+        btnSport = new JRadioButton("Sport");
+        btnLoisir = new JRadioButton("Loisir");
+        btnLivre = new JRadioButton("Livre");
+        btnInfo = new JRadioButton("Info");
+
+        ArrayList<JRadioButton> listebtnTheme = new ArrayList<JRadioButton>();
+        listebtnTheme.add(btnCinema);
+        listebtnTheme.add(btnSport);
+        listebtnTheme.add(btnLoisir);
+        listebtnTheme.add(btnLivre);
+        listebtnTheme.add(btnInfo);
+
+        for (JRadioButton rbtn : listebtnTheme){
+            if (currentBavard.getlisteTheme().contains(rbtn.getText()))
+                rbtn.setSelected(true);
+        }
+
+        JButton btnvalid = new JButton("Valider");
+        btnvalid.addActionListener( (event) -> btnValiderFiltreListener(event) );
+
+
+
+        // Créer un panneau pour contenir les boutons radio
+        JPanel panel = new JPanel(new GridLayout(8, 1, 10, 10)); // Utilisation d'un GridLayout pour placer les boutons les uns en dessous des autres, avec un espacement vertical de 10 pixels entre les boutons
+
+        panel.add(btnback);
+
+        panel.add(titre);
+
+        panel.add(btnCinema);
+        panel.add(btnSport);
+        panel.add(btnLoisir);
+        panel.add(btnLivre);
+        panel.add(btnInfo);
+
+        panel.add(btnvalid);
+
+
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+
+        // Ajouter le panneau à la fenêtre
+        setContentPane(panel);
+
+    }
+
+    private void btnValiderFiltreListener(ActionEvent e){
+        // Vide la liste des thèmes du current bavard
+        currentBavard.getlisteTheme().removeAll(currentBavard.getlisteTheme());
+
+        // Ajoute les themes selectionnés au bavard à sa liste
+        if (btnCinema.isSelected()){
+            currentBavard.getlisteTheme().add(btnCinema.getText());
+        }
+        if (btnSport.isSelected()){
+            currentBavard.getlisteTheme().add(btnSport.getText());
+        }
+        if (btnLoisir.isSelected()){
+            currentBavard.getlisteTheme().add(btnLoisir.getText());
+        }
+        if (btnLivre.isSelected()){
+            currentBavard.getlisteTheme().add(btnLivre.getText());
+        }
+        if (btnInfo.isSelected()){
+            currentBavard.getlisteTheme().add(btnInfo.getText());
+        }
+        System.out.println(currentBavard.getlisteTheme());
+        Bavard_Interface_Principal();
+    }
+
+    private void Bavard_Interface_People(){
+        setSize(300,500);
+        JPanel panelPrincipal = new JPanel();
+
+        JButton btnback = new JButton("Back");
+        btnback.addActionListener( (event) -> btnBackListener(event) );
+
+        JLabel titre = new JLabel("People");
+
+        listebtnPeople = new ArrayList<JRadioButton>();
+
+        for (Bavard b : this.batiment.getListeBavard()){
+            JRadioButton btnPeople = new JRadioButton(b.getPseudo());
+            listebtnPeople.add(btnPeople);
+        }
+
+
+        for (JRadioButton rbtn : listebtnPeople){
+            if (currentBavard.getListePeople().contains(rbtn.getText()))
+                rbtn.setSelected(true);
+        }
+
+        JButton btnvalid = new JButton("Valider");
+        btnvalid.addActionListener( (event) -> btnValiderPeopleListener(event) );
+
+
+
+        // Créer un panneau pour contenir les boutons radio
+        JPanel panel = new JPanel(new GridLayout(8, 1, 10, 10)); // Utilisation d'un GridLayout pour placer les boutons les uns en dessous des autres, avec un espacement vertical de 10 pixels entre les boutons
+
+        panel.add(btnback);
+
+        panel.add(titre);
+
+        for (JRadioButton btn : listebtnPeople){
+            panel.add(btn);
+        }
+
+        panel.add(btnvalid);
+
+
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+
+        // Ajouter le panneau à la fenêtre
+        setContentPane(panel);
+
+    }
+
+    private void btnValiderPeopleListener(ActionEvent e){
+        // Vide la liste des thèmes du current bavard
+        currentBavard.getListePeople().removeAll(currentBavard.getlisteTheme());
+
+        // Ajoute les personnes selectionnés au bavard à sa liste
+
+        for (JRadioButton rbtn : listebtnPeople){
+            if (rbtn.isSelected()){
+                currentBavard.getListePeople().add(rbtn.getText());
+            }
+        }
+
+        System.out.println(currentBavard.getListePeople());
         Bavard_Interface_Principal();
     }
 }
