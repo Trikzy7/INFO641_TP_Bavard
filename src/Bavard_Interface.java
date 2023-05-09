@@ -69,18 +69,10 @@ public class Bavard_Interface extends JFrame{
                 this.currentBavard.addListePeople(b.getPseudo());
         }
 
-        System.out.println("------------------------------------------------- LISTE DEBUT ET RETOUR");
-        System.out.println(currentBavard.getListePeople());
 
         // -- Le bavard envoie une notif aux autres pour dire qu'il est connecte
         this.getBatiment().bavardSendNotifyConnexion( this.getCurrentBavard() );
         this.listPseudoConnected = new JList(this.batiment.getlistPseudoConnected());
-
-//        System.out.println(this.getCurrentBavard().getListePeople());
-
-
-
-//        System.out.println(this.getBatiment().getListeBavard());
 
 
         // On met l'interface principal du bavard
@@ -199,6 +191,7 @@ public class Bavard_Interface extends JFrame{
 
     }
 
+
     // --------------- METHODS BINDING BTN
     private void btnWriteMessageListerner(ActionEvent e) {
         Bavard_Interface_Write();
@@ -210,6 +203,28 @@ public class Bavard_Interface extends JFrame{
 
     private void btnPeopleListener(ActionEvent e) {
         Bavard_Interface_People();
+    }
+
+    private void btnNotViewMessageListener(ActionEvent e){
+        if (btnHideMessage.isSelected()){
+            this.batiment.receiveMessageBavard(this.currentBavard, false);
+        }
+        else {
+            this.batiment.receiveMessageBavard(this.currentBavard, true);
+        }
+
+    }
+
+    private void btnDecoListener(ActionEvent e){
+
+        this.getBatiment().bavardSendNotifyDeconnexion(this.getCurrentBavard());
+        this.getCurrentBavard().setOnLine(false);
+
+        this.getCurrentBavard().getListMessageReceived().removeAll( this.getCurrentBavard().getListMessageReceived() );
+        this.getCurrentBavard().getListShort().removeAllElements();
+
+
+        dispose();
     }
 
     private void btnShowMessageDetailListener(ActionEvent e) {
@@ -238,27 +253,7 @@ public class Bavard_Interface extends JFrame{
 
     }
 
-    private void btnNotViewMessageListener(ActionEvent e){
-        if (btnHideMessage.isSelected()){
-            this.batiment.receiveMessageBavard(this.currentBavard, false);
-        }
-        else {
-            this.batiment.receiveMessageBavard(this.currentBavard, true);
-        }
 
-    }
-
-    private void btnDecoListener(ActionEvent e){
-
-        this.getBatiment().bavardSendNotifyDeconnexion(this.getCurrentBavard());
-        this.getCurrentBavard().setOnLine(false);
-
-        this.getCurrentBavard().getListMessageReceived().removeAll( this.getCurrentBavard().getListMessageReceived() );
-        this.getCurrentBavard().getListShort().removeAllElements();
-
-
-        dispose();
-    }
 
 
     // -- Interface pour écrire un message
@@ -310,35 +305,24 @@ public class Bavard_Interface extends JFrame{
 
     }
 
+
     // --------------- METHODS BINDING BTN
     private void btnSendMessageListener(ActionEvent e) {
-//        System.out.println("------------ Les destinataires de " + this.getCurrentBavard().getPseudo() + " :");
-//        System.out.println(this.getCurrentBavard().destinataires);
-//
-//        System.out.println("------------ Les destinataires du concierge " + this.getCurrentBavard().destinataires.get(0) + " :");
-//        System.out.println( this.getBatiment().getConcierge().destinataires);
 
         String subject = inputSubject.getText();
         String theme = (String) inputTheme.getSelectedItem();
         String message = inputAreaMessage.getText();
-//
-//        System.out.println(this.getCurrentBavard());
-//        System.out.println(this.getBatiment().getListeBavard());
 
-//        System.out.println( this.getBatiment().getListeBavard() );
-//        System.out.println( this.getBatiment().getConcierge() );
-
-//        this.inputSubject.setText(this.getCurrentBavard().getPseudo());
         this.getBatiment().bavardSendMessage( this.getCurrentBavard(), subject, theme, message );
 
         Bavard_Interface_Principal();
-//        System.out.println(this.list);
 
     }
 
     private void btnBackListener(ActionEvent e) {
         Bavard_Interface_Principal();
     }
+
 
 
     // -- Interface pour sélectionner un filtre de thème
@@ -400,6 +384,7 @@ public class Bavard_Interface extends JFrame{
 
     }
 
+    // --------------- METHODS BINDING BTN
     private void btnValiderFiltreListener(ActionEvent e){
         // Vide la liste des thèmes du current bavard
         currentBavard.getlisteTheme().removeAll(currentBavard.getlisteTheme());
@@ -429,7 +414,6 @@ public class Bavard_Interface extends JFrame{
     // -- Interface pour sélectionner un filtre de people
     private void Bavard_Interface_People(){
         setSize(300,500);
-        JPanel panelPrincipal = new JPanel();
 
         JButton btnback = new JButton("Back");
         btnback.addActionListener( (event) -> btnBackListener(event) );
@@ -476,19 +460,18 @@ public class Bavard_Interface extends JFrame{
 
     }
 
+    // --------------- METHODS BINDING BTN
     private void btnValiderPeopleListener(ActionEvent e){
         // Vide la liste des people du current bavard
         currentBavard.getListePeople().removeAll(currentBavard.getListePeople());
 
         // Ajoute les personnes selectionnés au bavard à sa liste
-
         for (JRadioButton rbtn : listebtnPeople){
             if (rbtn.isSelected()){
                 currentBavard.getListePeople().add(rbtn.getText());
             }
         }
-        System.out.println("------------------------------------------------- LISTE APRES MODIF");
-        System.out.println(currentBavard.getListePeople());
+
         Bavard_Interface_Principal();
     }
 }

@@ -2,13 +2,13 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class Batiment {
-
+    //ATTRIBUT
     private String name;
-
-    Concierge concierge = null;
-    ArrayList<Bavard> listeBavard = new ArrayList<Bavard>();
-
+    private Concierge concierge = null;
+    private ArrayList<Bavard> listeBavard = new ArrayList<Bavard>();
     private DefaultListModel listPseudoConnected = new DefaultListModel();
+
+    // GETTER ET SETTER
     public DefaultListModel getlistPseudoConnected(){return listPseudoConnected;}
 
     public Concierge getConcierge() {
@@ -35,6 +35,7 @@ public class Batiment {
         this.name = name;
     }
 
+    // CONSTRUCTOR
     public Batiment(String name) {
         this.name = name;
     }
@@ -42,7 +43,9 @@ public class Batiment {
 
 
     // ----- Methods
+
     public boolean addConcierge(Concierge concierge) {
+        // ajout concierge
         if (this.getConcierge() == null) {
             this.setConcierge( concierge );
             return true;
@@ -56,18 +59,22 @@ public class Batiment {
     }
 
     public void replaceConcierge(Concierge concierge) {
+        //permet de remplacer le concierge deja existant
         this.setConcierge( concierge );
     }
 
     public void addBavard(Bavard bavard) {
+        // ajouter un bavard à la liste de bavard
         this.listeBavard.add( bavard );
     }
 
     public void removeBavard(Bavard bavard) {
+        // enleve le bavard de la liste de bavards
         this.listeBavard.remove( bavard );
     }
 
     public void connectBavard (Bavard bavard) {
+        // connecte un bavard en le mettant en OnLine
 
         for (Bavard b : this.getListeBavard()) {
             if (b == bavard)
@@ -76,7 +83,7 @@ public class Batiment {
     }
 
     public void disconnectBavard (Bavard bavard) {
-
+        // deconnecte un bavard en le mettant en OffLine
         for (Bavard b : this.getListeBavard()) {
             if (b == bavard)
                 b.setOnLine(false);
@@ -86,8 +93,9 @@ public class Batiment {
 
     // --------------------- METHODS SEND MESSAGE
     public void receiveMessageBavard (Bavard bavard, boolean wantReceiveMessage) {
+        // permet de recevoir un message
 
-        if (wantReceiveMessage) {
+        if (wantReceiveMessage) { // si le bavard veut recevoir des messages
             for (Bavard b : this.getListeBavard()) {
                 if (b == bavard) {
                     // -- Le bavard veut recevoir les messages du concierge
@@ -102,7 +110,7 @@ public class Batiment {
 
             }
         }
-        else {
+        else { // si il ne veut pas recevoir de message
             for (Bavard b : this.getListeBavard()) {
                 if (b == bavard) {
                     // -- Le bavard veut recevoir les messages du concierge
@@ -120,8 +128,8 @@ public class Batiment {
     }
 
     public void addBavardsInListConcierge(Bavard b) {
+        // Add les bavards qui veulent recevoir les messages pour le concierge
         if (b.isWantReceiveMessage() && !this.getConcierge().destinataires.contains(b))
-            // Add les bavards qui veulent recevoir les messages pour le concierge
             this.getConcierge().addPapotageListener(b);
     }
 
@@ -132,14 +140,14 @@ public class Batiment {
     }
 
     public void removeBavardsInListConcierge(Bavard b) {
+        // Add les bavards qui veulent recevoir les messages pour le concierge
         if (!b.isWantReceiveMessage())
-            // Add les bavards qui veulent recevoir les messages pour le concierge
             this.getConcierge().removePapotageListener(b);
     }
 
     public void removeConciergeInListBavard(Bavard b) {
+        // Add le concierge pour les bavards qui veulent recevoir les messages
         if (!b.isWantReceiveMessage())
-            // Add le concierge pour les bavards qui veulent recevoir les messages
             b.removePapotageListener(this.getConcierge());
     }
 
@@ -158,16 +166,18 @@ public class Batiment {
     }
 
     public void bavardSendMessage(Bavard bavard, String sujet,String theme, String corps) {
-        if (bavard.isOnLine()) {
+        // envoie d'un message par un bavard
+        if (bavard.isOnLine()) { // s'il est en ligne
             for (Bavard b : this.getListeBavard()) {
                 if (b == bavard) {
-                    b.generateNewPapotage(sujet,theme, corps);
+                    b.generateNewPapotage(sujet,theme, corps); // genere un nouveau papotage
                 }
             }
         }
     }
 
     public void conciergeSendMessage(String sujet, String theme, String corps) {
+        // le concierge envoie un message
         this.getConcierge().generateNewPapotage(sujet,theme, corps);
     }
 
@@ -188,10 +198,14 @@ public class Batiment {
     }
 
     public void removeBavardsInListOnLineConcierge(Bavard b) {
+        /*
+        Permet de supprimer un bavard dans la liste des personnes onLine
+         */
             this.getConcierge().removeOnLineListener(b);
     }
 
     public void removeConciergeInListOnLineBavard(Bavard b) {
+        // remove le concierge pour les bavards qui veulent recevoir les messages
         b.removeOnLineListener(this.getConcierge());
     }
 
@@ -212,23 +226,12 @@ public class Batiment {
                 // -- Envoyer un message au concierge pour dire que le bavard est connecté
                 for (Bavard b : this.getListeBavard()) {
                     if (b == bavard) {
-                        System.out.println("------------------------------------------------------------------------------------------------------------------------ LALALALALALALALALL");
                         b.generateNewPapotage(b.getPseudo() + " connexion", "ONLINE",b.getPseudo() + " vient de se connecter");
                     }
                 }
 
             }
-
-
-
-//            for (Bavard b : this.getListeBavard()) {
-//                if (b == bavard) {
-//                    b.generateNewOnLine(bavard);
-//                }
-//            }
         }
-
-//        System.out.println(bavard.destinatairesOnLine);
     }
 
     public void bavardSendNotifyDeconnexion(Bavard bavard) {
@@ -243,8 +246,6 @@ public class Batiment {
         if (this.getlistPseudoConnected().contains(bavard.getPseudo() + " <ON LINE>")){
             this.getlistPseudoConnected().removeElement(bavard.getPseudo() + " <ON LINE>" );
 
-//                System.out.println(bavard.destinataires);
-
             // -- Envoyer un message au concierge pour dire que le bavard est connecté
             for (Bavard b : this.getListeBavard()) {
                 if (b == bavard) {
@@ -252,7 +253,5 @@ public class Batiment {
                 }
             }
         }
-
     }
-
 }

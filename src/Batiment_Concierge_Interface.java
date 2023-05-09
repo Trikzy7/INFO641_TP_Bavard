@@ -4,16 +4,16 @@ import java.awt.event.ActionEvent;
 
 public class Batiment_Concierge_Interface extends JFrame {
 
+    // -- ATTRIBUTE
     private Batiment batiment;
-
     JPanel panelContenuAllMessage;
     private JList<String> listMessageShortJList;
+
 
     // -- GETTER AND SETTER
     public Batiment getBatiment() {
         return batiment;
     }
-
     public void setBatiment(Batiment batiment) {
         this.batiment = batiment;
     }
@@ -74,20 +74,28 @@ public class Batiment_Concierge_Interface extends JFrame {
         setVisible(true);
     }
 
+    // --------------- METHODS BINDING BTN
+    // mathode pour voir le détail du message
     private void btnShowMessageDetailListener(ActionEvent e) {
         String messageSelected = this.listMessageShortJList.getSelectedValue();
         int messageSelectedId = this.listMessageShortJList.getSelectedIndex();
 
-        String messageFull = "Sujet : " + this.getBatiment().getConcierge().getListMessageReceived().get( messageSelectedId ).getSujet() + "\n\n"
-                + "Corps : \n"
-                + this.getBatiment().getConcierge().getListMessageReceived().get( messageSelectedId ).getCorps();
 
-        JOptionPane.showMessageDialog(
-                this,
-                messageFull,
-                messageSelected,
-                JOptionPane.PLAIN_MESSAGE
-        );
+        if (messageSelectedId == -1 )
+            JOptionPane.showMessageDialog(this, "Pas de message selectionné");
+        else {
+            String messageFull =  "Sujet : " + this.getBatiment().getConcierge().getListMessageReceived().get( messageSelectedId ).getSujet() + "\n\n"
+                    + "Corps : \n"
+                    + this.getBatiment().getConcierge().getListMessageReceived().get( messageSelectedId ).getCorps();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    messageFull,
+                    messageSelected,
+                    JOptionPane.PLAIN_MESSAGE
+            );
+        }
+
     }
 
 }
