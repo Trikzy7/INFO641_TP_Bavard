@@ -18,6 +18,9 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
     public void setListePeople(ArrayList<String> listePeople) {
         this.listePeople = listePeople;
     }
+    public void addListePeople(String people) {
+        this.listePeople.add(people);
+    }
 
     public ArrayList<String> getlisteTheme() {
         return listeTheme;

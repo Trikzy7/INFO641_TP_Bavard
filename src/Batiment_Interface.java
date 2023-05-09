@@ -169,6 +169,8 @@ public class Batiment_Interface extends JFrame implements ActionListener {
 
         // -- Create Batiment
         this.batiment = batiment;
+
+
     }
 
 

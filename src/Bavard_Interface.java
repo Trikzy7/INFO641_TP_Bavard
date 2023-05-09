@@ -61,11 +61,18 @@ public class Bavard_Interface extends JFrame{
         // -- Default : tous les bavards veulent recevoir les messages
         for (Bavard b : this.getBatiment().getListeBavard()) {
             this.getBatiment().receiveMessageBavard(b, true);
+            // ajoute à tout les bavards les bavard dont ils veulent recevoir les messages
+            for (Bavard bav : this.getBatiment().getListeBavard()){
+                    b.addListePeople(bav.getPseudo());
+            }
+            System.out.println(b.getListePeople());
         }
 
         // -- Le bavard envoie une notif aux autres pour dire qu'il est connecte
         this.getBatiment().bavardSendNotifyConnexion( this.getCurrentBavard() );
         this.listPseudoConnected = new JList(this.batiment.getlistPseudoConnected());
+
+        System.out.println(this.getCurrentBavard().getListePeople());
 
 
 
