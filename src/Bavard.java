@@ -139,7 +139,7 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
             System.out.println("Corps : " + papotage.getCorps() +"\n");
 
             // Check if le bavard veut bien recevoir ce message en fonction de son thème et s'il provient d'un bavard dont il veut recevoir les messages
-            if ( ( ( this.getlisteTheme().contains(papotage.getTheme())) || papotage.getTheme().contains("ONLINE") ) &&
+            if ( ( ( this.getlisteTheme().contains(papotage.getTheme())) || papotage.getTheme().contains("ONLINE") || papotage.getTheme().contains("OFFLINE") ) &&
                     ( this.getListePeople().contains( ((Bavard) papotage.getSource()).getPseudo() ) ) ){
 
                 // -- Ajout a la liste des message

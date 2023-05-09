@@ -246,10 +246,10 @@ public class Batiment {
         if (this.getlistPseudoConnected().contains(bavard.getPseudo() + " <ON LINE>")){
             this.getlistPseudoConnected().removeElement(bavard.getPseudo() + " <ON LINE>" );
 
-            // -- Envoyer un message au concierge pour dire que le bavard est connecté
+            // -- Envoyer un message au concierge pour dire que le bavard est déconnecté
             for (Bavard b : this.getListeBavard()) {
                 if (b == bavard) {
-                    b.generateNewPapotage(b.getPseudo() + " deconnexion", "",b.getPseudo() + " vient de se déconnecter");
+                    b.generateNewPapotage(b.getPseudo() + " deconnexion", "OFFLINE",b.getPseudo() + " vient de se déconnecter");
                 }
             }
         }
