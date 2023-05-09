@@ -61,18 +61,22 @@ public class Bavard_Interface extends JFrame{
         // -- Default : tous les bavards veulent recevoir les messages
         for (Bavard b : this.getBatiment().getListeBavard()) {
             this.getBatiment().receiveMessageBavard(b, true);
-            // ajoute à tout les bavards les bavard dont ils veulent recevoir les messages
-            for (Bavard bav : this.getBatiment().getListeBavard()){
-                    b.addListePeople(bav.getPseudo());
-            }
-            System.out.println(b.getListePeople());
         }
+
+        // -- Pour le bavard qui vient de connecter -> il veut recevoir les messages de tous les autres bavards
+        for (Bavard b : this.getBatiment().getListeBavard()) {
+            if (!this.currentBavard.getListePeople().contains(b.getPseudo()))
+                this.currentBavard.addListePeople(b.getPseudo());
+        }
+
+        System.out.println("------------------------------------------------- LISTE DEBUT ET RETOUR");
+        System.out.println(currentBavard.getListePeople());
 
         // -- Le bavard envoie une notif aux autres pour dire qu'il est connecte
         this.getBatiment().bavardSendNotifyConnexion( this.getCurrentBavard() );
         this.listPseudoConnected = new JList(this.batiment.getlistPseudoConnected());
 
-        System.out.println(this.getCurrentBavard().getListePeople());
+//        System.out.println(this.getCurrentBavard().getListePeople());
 
 
 
@@ -209,19 +213,28 @@ public class Bavard_Interface extends JFrame{
     }
 
     private void btnShowMessageDetailListener(ActionEvent e) {
+        /*
+        Afficher le détail du message selectionné
+         */
+
         String messageSelected = list.getSelectedValue();
         int messageSelectedId = list.getSelectedIndex();
 
-        String messageFull =  "Sujet : " + this.getCurrentBavard().getListMessageReceived().get( messageSelectedId ).getSujet() + "\n\n"
-                + "Corps : \n"
-                + this.getCurrentBavard().getListMessageReceived().get( messageSelectedId ).getCorps();
+        if (messageSelectedId == -1 )
+            JOptionPane.showMessageDialog(this, "Pas de message selectionné");
+        else {
+            String messageFull =  "Sujet : " + this.getCurrentBavard().getListMessageReceived().get( messageSelectedId ).getSujet() + "\n\n"
+                    + "Corps : \n"
+                    + this.getCurrentBavard().getListMessageReceived().get( messageSelectedId ).getCorps();
 
-        JOptionPane.showMessageDialog(
-                this,
-                messageFull,
-                messageSelected,
-                JOptionPane.PLAIN_MESSAGE
-        );
+            JOptionPane.showMessageDialog(
+                    this,
+                    messageFull,
+                    messageSelected,
+                    JOptionPane.PLAIN_MESSAGE
+            );
+        }
+
 
     }
 
@@ -316,10 +329,10 @@ public class Bavard_Interface extends JFrame{
 //        System.out.println( this.getBatiment().getConcierge() );
 
 //        this.inputSubject.setText(this.getCurrentBavard().getPseudo());
-        this.getBatiment().bavardSendMessage( this.getCurrentBavard(), subject,theme, message );
+        this.getBatiment().bavardSendMessage( this.getCurrentBavard(), subject, theme, message );
 
         Bavard_Interface_Principal();
-        System.out.println(this.list);
+//        System.out.println(this.list);
 
     }
 
@@ -327,6 +340,8 @@ public class Bavard_Interface extends JFrame{
         Bavard_Interface_Principal();
     }
 
+
+    // -- Interface pour sélectionner un filtre de thème
     private void Bavard_Interface_Filtre(){
         setSize(300,500);
         JPanel panelPrincipal = new JPanel();
@@ -409,6 +424,9 @@ public class Bavard_Interface extends JFrame{
         Bavard_Interface_Principal();
     }
 
+
+
+    // -- Interface pour sélectionner un filtre de people
     private void Bavard_Interface_People(){
         setSize(300,500);
         JPanel panelPrincipal = new JPanel();
@@ -459,8 +477,8 @@ public class Bavard_Interface extends JFrame{
     }
 
     private void btnValiderPeopleListener(ActionEvent e){
-        // Vide la liste des thèmes du current bavard
-        currentBavard.getListePeople().removeAll(currentBavard.getlisteTheme());
+        // Vide la liste des people du current bavard
+        currentBavard.getListePeople().removeAll(currentBavard.getListePeople());
 
         // Ajoute les personnes selectionnés au bavard à sa liste
 
@@ -469,7 +487,7 @@ public class Bavard_Interface extends JFrame{
                 currentBavard.getListePeople().add(rbtn.getText());
             }
         }
-
+        System.out.println("------------------------------------------------- LISTE APRES MODIF");
         System.out.println(currentBavard.getListePeople());
         Bavard_Interface_Principal();
     }

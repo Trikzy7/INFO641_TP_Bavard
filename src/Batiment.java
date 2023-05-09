@@ -208,12 +208,12 @@ public class Batiment {
             if (!this.getlistPseudoConnected().contains(bavard.getPseudo() + " <ON LINE>")){
                 this.getlistPseudoConnected().addElement(bavard.getPseudo() + " <ON LINE>" );
 
-                System.out.println(bavard.destinataires);
 
                 // -- Envoyer un message au concierge pour dire que le bavard est connecté
                 for (Bavard b : this.getListeBavard()) {
                     if (b == bavard) {
-                        b.generateNewPapotage(b.getPseudo() + " connexion", "",b.getPseudo() + " vient de se connecter");
+                        System.out.println("------------------------------------------------------------------------------------------------------------------------ LALALALALALALALALL");
+                        b.generateNewPapotage(b.getPseudo() + " connexion", "ONLINE",b.getPseudo() + " vient de se connecter");
                     }
                 }
 

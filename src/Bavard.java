@@ -139,7 +139,13 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
             System.out.println("Sujet : " + papotage.getSujet());
             System.out.println("Corps : " + papotage.getCorps() +"\n");
 
-            if ((this.getlisteTheme().contains(papotage.getTheme()))&&(this.getListePeople().contains(((Bavard) papotage.getSource()).getPseudo()))){
+            System.out.println("------------------------------------------------------------ ::::::::::::::::::::::::::::::::::::::::: " + this.getPseudo());
+            System.out.println(this.getListePeople());
+            System.out.println( ((Bavard) papotage.getSource()).getPseudo());
+
+            if ( ( ( this.getlisteTheme().contains(papotage.getTheme())) || papotage.getTheme().contains("ONLINE") ) &&
+                    ( this.getListePeople().contains( ((Bavard) papotage.getSource()).getPseudo() ) ) ){
+
                 this.addMessage(papotage);
                 this.getListShort().addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
             }
