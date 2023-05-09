@@ -55,7 +55,7 @@ public class Batiment_Interface extends JFrame implements ActionListener {
     public boolean checkIfBavardExist(String pseudo) {
         /*
         Permet de checker si un bavard a bien été créer au préalable
-        Retrun :
+        Return :
             - True : Si le bavard est dans la liste de bavard créé
             - False : Si le bavard n'est pas dans la liste des bavards créé
          */
@@ -74,6 +74,9 @@ public class Batiment_Interface extends JFrame implements ActionListener {
     }
 
     public Bavard getBavardFromList(String pseudo) {
+        /*
+        Return le bavard from the list of the batiment with his pseudo
+         */
         Bavard bavardToFind = null;
 
         for (Bavard b : this.getBatiment().getListeBavard()) {
@@ -213,7 +216,7 @@ public class Batiment_Interface extends JFrame implements ActionListener {
     private void btnConnectBavardListener( ActionEvent e) {
         /*
         Permet de connecter un bavard
-        Et redirige sur l'interface d'un bavard avec le current bavard
+        Et redirige sur l'interface d'un bavard avec le current bavard (bavard qui vient de se connecter)
          */
 
         // -- Get text in input field create bavard

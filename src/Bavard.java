@@ -127,9 +127,8 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
     public void newPapotage(PapotageEvent papotage) {
         /*
         GOAL : Envoyer les données à l'interface
+           Permet de recevoir un message venant source
          */
-
-//        System.out.println( papotage.getSource().getClass() );
 
         Bavard bavardSRC = (Bavard) papotage.getSource();
 
@@ -139,18 +138,17 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
             System.out.println("Sujet : " + papotage.getSujet());
             System.out.println("Corps : " + papotage.getCorps() +"\n");
 
-            System.out.println("------------------------------------------------------------ ::::::::::::::::::::::::::::::::::::::::: " + this.getPseudo());
-            System.out.println(this.getListePeople());
-            System.out.println( ((Bavard) papotage.getSource()).getPseudo());
-
+            // Check if le bavard veut bien recevoir ce message en fonction de son thème et s'il provient d'un bavard dont il veut recevoir les messages
             if ( ( ( this.getlisteTheme().contains(papotage.getTheme())) || papotage.getTheme().contains("ONLINE") ) &&
                     ( this.getListePeople().contains( ((Bavard) papotage.getSource()).getPseudo() ) ) ){
 
+                // -- Ajout a la liste des message
                 this.addMessage(papotage);
+
+                // -- Ajout a la liste short -> list qui va etre affiche dans la JList niveau graphique
                 this.getListShort().addElement(bavardSRC.getPseudo()+" : "+papotage.getSujet());
             }
 
-//            System.out.println(this.getListMessageReceived());
         }
     }
 
@@ -186,10 +184,12 @@ public class Bavard  implements PapotageListener, OnLineBavardListener{
     public void newOnLine(OnLineBavardEvent online) {
         /*
         GOAL : Envoyer les données à l'interface
+        Permet de recevoir laa notification qu'un nouveau bavard s'est connecté
          */
 
         Bavard bavardSRC = (Bavard) online.getSource();
 
+        // -- Si le bavard est en ligne
         if (this.isOnLine()) {
             System.out.println("Source connected : " + bavardSRC.getPseudo() );
             System.out.println(this.getPseudo() + " a bien reçu la notif");
